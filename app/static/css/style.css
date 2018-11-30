@@ -1,0 +1,14 @@
+/* main html */
+.central {
+    text-align: center;
+}
+
+.footer {
+  font-family: sans-serif;
+  /*position: absolute;
+  bottom: 0px;
+  margin:auto;
+  left: 0px;
+  right: 0px;
+  width: 40%;*/
+}
