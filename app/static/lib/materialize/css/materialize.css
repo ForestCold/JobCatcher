@@ -7347,7 +7347,7 @@ input[type=range]:focus::-ms-fill-upper {
 
 .side-nav {
   position: fixed;
-  width: 300px;
+  width: 240px;
   left: 0;
   top: 0;
   margin: 0;
@@ -7396,7 +7396,7 @@ input[type=range]:focus::-ms-fill-upper {
   font-weight: 500;
   height: 48px;
   line-height: 48px;
-  padding: 0 32px;
+  padding: 0 22px;
 }
 
 .side-nav li > a:hover {
@@ -7429,7 +7429,7 @@ input[type=range]:focus::-ms-fill-upper {
   float: left;
   height: 48px;
   line-height: 48px;
-  margin: 0 32px 0 0;
+  margin: 0 22px 0 0;
   width: 24px;
   color: rgba(0, 0, 0, 0.54);
 }

@@ -5,10 +5,39 @@
 
 .footer {
   font-family: sans-serif;
-  /*position: absolute;
+  position: absolute;
   bottom: 0px;
   margin:auto;
   left: 0px;
   right: 0px;
-  width: 40%;*/
+  width: 40%;
+}
+
+/* upload */
+#upload-area {
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-left: 240px;
+}
+
+.uppy-Dashboard {
+  height: 100%;
+}
+
+.uppy-DashboardItem-previewInnerWrap {
+  background-color: #ffe482 !important;
+}
+
+#preview-area {
+  height: 500px;
+  width: 600px;
+  padding: 50px;
+  margin-left: 240px;
+  float: left;
+}
+
+.cloud-tags {
+  margin-left: 850px;
+  margin-right: 50px;
+  margin-top: 50px;
 }
