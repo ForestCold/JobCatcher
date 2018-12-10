@@ -4,26 +4,30 @@ var app = new Vue({
     el: '#app',
     store,
     components: {
+      'head-nav' : headNav,
       'side-nav' : sideNav,
-      'upload' : upload,
-      'resume-analysis' : resumeAnalysis
-      // 'job-recommendation' : jobRecommendation
+      'upload-area' : uploadArea,
+      'analysis-area' : analysisArea,
+      'recommendation-area' : recommendationArea
     },
     template: `
       <side-nav></side-nav>
-      <upload></upload>
-      <resume-analysis v-if="moduleName=='resumeAnalysis'"></resume-analysis>
+      <head-nav></head-nav>
+      <upload-area v-if="selectedModule=='upload'"></upload-area>
+      <analysis-area v-if="selectedModule=='analysis'"></analysis-area>
+      <recommendation-area v-if="selectedModule=='recommendation'"></recommendation-area>
     `,
     data: function() {
     },
     ready: function() {
+      
     },
     methods: {
 
     },
     computed: {
-        moduleName () {
-          return store.state.module;
-        }
+      selectedModule () {
+        return store.state.selectedModule;
+      }
     }
 })

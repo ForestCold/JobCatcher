@@ -14,10 +14,9 @@
 }
 
 /* upload */
-#upload-area {
-  padding-left: 50px;
-  padding-right: 50px;
-  margin-left: 240px;
+.area {
+  padding: 50px;
+  margin-left: 230px;
 }
 
 .uppy-Dashboard {
@@ -28,8 +27,12 @@
   background-color: #ffe482 !important;
 }
 
+.uppy-DashboardItem-previewInnerWrap:hover {
+  background-color: #89c3b0 !important;
+}
+
 #preview-area {
-  height: 500px;
+  height: 900px;
   width: 600px;
   padding: 50px;
   margin-left: 240px;

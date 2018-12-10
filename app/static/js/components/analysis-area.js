@@ -1,6 +1,6 @@
 Vue.config.devtools = true;
 
-var resumeAnalysis = Vue.component('resume-analysis', {
+var analysisArea = Vue.component('analysis-area', {
     components: {
       'preview' : preview,
       'keywords' : keywords

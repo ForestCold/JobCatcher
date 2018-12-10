@@ -4,16 +4,13 @@ var preview = Vue.component('preview', {
     template: `
       <div id="preview-area"></div>
     `,
-    data: {
-      pdfUrl : ''
-    },
     ready: function() {
-      this.renderPDF(this.pdfUrl);
+      this.renderPDF(this.selectedResume);
     },
     methods: {
       renderPDF(url) {
         var options = {
-          height: "400px",
+          height: "600px",
           page: '2',
           pdfOpenParams: {
             view: 'FitV',
@@ -25,14 +22,14 @@ var preview = Vue.component('preview', {
       }
     },
     computed: {
-      pdfUrl() {
-        return store.state.pdfUrl;
+      selectedResume() {
+        return store.state.selectedResume;
       }
     },
     watch: {
-      pdfUrl: function(newUrl, oldUrl) {
-        if (newUrl != oldUrl) {
-          this.renderPDF(newUrl);
+      selectedResume: function(newResume, oldResume) {
+        if (newResume != oldResume) {
+          this.renderPDF(newResume);
         }
       }
     }

@@ -2,23 +2,43 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    'module' : 'index',
-    'pdfUrl' : 'none'
+    'selectedModule' : 'upload',
+    'selectedResume' : 'none',
+    'resumeList' : {},
+    'uploadedResume' : 'none'
   },
   mutations: {
-    updateModule(state, moduleName) {
-      state.module = moduleName;
+    updateSelectedModule (state, selectedModule) {
+      state.selectedModule = selectedModule;
     },
-    updatePdfUrl(state, pdfUrl) {
-      state.pdfUrl = pdfUrl;
+    updateSelectedResume (state, selectedResume) {
+      state.selectedResume = selectedResume;
+    },
+    updateUpdatedResume (state, uploadedResume) {
+      state.uploadedResume = uploadedResume;
+    },
+    updateResumeList (state, resumeInfo) {
+      var selectedResumeInfo = resumeInfo;
+      state.resumeList[state.selectedResume] = {
+        'name' : resumeInfo.name,
+        'domain' : resumeInfo.domain,
+        'experience' : resumeInfo.experience,
+        'type' : resumeInfo.type
+      };
     }
   },
   actions: {
-    setModule (state, moduleName) {
-      this.commit("updateModule", moduleName);
+    setSelectedModule (state, selectedModule) {
+      this.commit("updateSelectedModule", selectedModule);
     },
-    setPdfUrl (state, pdfUrl) {
-      this.commit("updatePdfUrl", pdfUrl);
+    setSelectedResume (state, selectedResume) {
+      this.commit("updateSelectedResume", selectedResume);
+    },
+    setUploadedResume (state, uploadedResume) {
+      this.commit("updateUpdatedResume", uploadedResume);
+    },
+    addResumeInfo (state, resumeInfo) {
+      this.commit("updateResumeList", resumeInfo);
     }
   }
 })

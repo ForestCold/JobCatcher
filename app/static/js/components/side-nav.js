@@ -8,34 +8,42 @@ var sideNav = Vue.component('side-nav', {
           </div>
           <a href="#!user"><img class="rect" src="images/icon-img.png"></a>
           <a href="#!name"><span class="white-text name">Job Catcher</span></a>
-          <a href="#!email"><span class="white-text email">Description</span></a>
+          <a href="#!email"><span class="white-text email">About Us</span></a>
         </div></li>
-        <li v-for="module in modules" v-on:click="moduleActive(module.name)">
-          <a href="#!"><i class="material-icons">{{module.icon}}</i>{{module.text}}
+        <li v-for="resume in resumeShowList" v-on:click="resumeSelected(resume)" v-bind:class="{'active':(resume === curResume)}">
+          <a href="#!" style="color:#3d5165">
+            <i class="material-icons" style="color:#495a6e">description</i>
+          {{resumeList[resume].name}}</a>
         </li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Profile</a></li>
-        <li><a class="waves-effect" href="#!">Uploaded Resume</a></li>
-        <li><a class="waves-effect" href="#!">Search History</a></li>
       </ul>
-      <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
     `,
     data: function(){
       return {
-        'modules' : [{
-          'name' : 'resumeAnalysis',
-          'text' : 'Resume Analysis',
-          'icon' : 'person_pin'
-        },{
-          'name' : 'jobRecommendation',
-          'text' : 'Job Recommendation',
-          'icon' : 'search'
-        }]
+        resumeShowList : [],
+        curResume : 'none'
       }
     },
     methods: {
-      moduleActive : function(name) {
-        store.dispatch('setModule', name);
+      resumeSelected : function(name) {
+        store.dispatch('setSelectedResume', name);
+        this.curResume = name;
+      }
+    },
+    computed: {
+      uploadedResume() {
+        return store.state.uploadedResume;
+      },
+      resumeList() {
+        return store.state.resumeList;
+      }
+    },
+    watch: {
+      uploadedResume: function(newResume, oldResume) {
+        if (newResume != oldResume) {
+          for (resume in store.state.resumeList) {
+            this.resumeShowList.push(resume);
+          }
+        }
       }
     }
 })

@@ -2,29 +2,29 @@ Vue.config.devtools = true;
 
 var keywords = Vue.component('keywords', {
     template: `
-      <div id = "keyword-area"></div>
+      <div class="chips chips-initial"></div>
     `,
     data: {
-      pdfUrl : ''
+      selectedResume : ''
     },
     ready: function() {
-      this.reload(this.pdfUrl);
+      this.reload(this.selectedResume);
     },
     methods: {
-      reload : function(url) {
+      reload : function(selectedResume) {
         $.ajax({
             method: 'GET',
-            url: 'analysis/' + url.replace("uploaded_files/", ""),
+            url: 'analysis/' + selectedResume.replace("uploaded_files/", ""),
             success: function(resp) {
                 if (!resp || resp.status !== "success") {
                     resp = $.parseJSON(resp)
-                    $(".cloud-tags").remove();
-                    $("#keyword-area").append("<ul class=\"cloud-tags\">");
-                    for (keyword in resp) {
-                      $(".cloud-tags").append("<li> <a href=\"#tag_lin\">" + resp[keyword] + "</a> </li>");
+                    var data = [];
+                    for (r in resp) {
+                      word = {'tag' : resp[r]}
+                      data.push(word)
                     }
-                    $(".cloud-tags").prettyTag({
-                      randomColor: false
+                    $('.chips-initial').material_chip({
+                      data: data
                     });
                     return;
                 }
@@ -35,14 +35,14 @@ var keywords = Vue.component('keywords', {
       }
     },
     computed: {
-      pdfUrl() {
-        return store.state.pdfUrl;
+      selectedResume() {
+        return store.state.selectedResume;
       }
     },
     watch: {
-      pdfUrl: function(newUrl, oldUrl) {
-        if (newUrl != oldUrl) {
-          this.reload(newUrl);
+      selectedResume: function(newResume, oldResume) {
+        if (newResume != oldResume) {
+          this.reload(newResume);
         }
       }
     }
