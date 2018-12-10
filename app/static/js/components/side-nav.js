@@ -1,6 +1,6 @@
 Vue.config.devtools = true;
 
-Vue.component('side-nav', {
+var sideNav = Vue.component('side-nav', {
     template: `
     <ul id="slide-out" class="side-nav fixed">
         <li><div class="user-view">
@@ -8,15 +8,42 @@ Vue.component('side-nav', {
           </div>
           <a href="#!user"><img class="rect" src="images/icon-img.png"></a>
           <a href="#!name"><span class="white-text name">Job Catcher</span></a>
-          <a href="#!email"><span class="white-text email">Description</span></a>
+          <a href="#!email"><span class="white-text email">About Us</span></a>
         </div></li>
-        <li><a href="upload.html"><i class="material-icons">person_pin</i>Resume Analysis</a></li>
-        <li><a href="#!"><i class="material-icons">search</i>Job Recommendation</a></li>
-        <li><div class="divider"></div></li>
-        <li><a class="subheader">Profile</a></li>
-        <li><a class="waves-effect" href="#!">Uploaded Resume</a></li>
-        <li><a class="waves-effect" href="#!">Search History</a></li>
+        <li v-for="resume in resumeShowList" v-on:click="resumeSelected(resume)" v-bind:class="{'active':(resume === curResume)}">
+          <a href="#!" style="color:#3d5165">
+            <i class="material-icons" style="color:#495a6e">description</i>
+          {{resumeList[resume].name}}</a>
+        </li>
       </ul>
-      <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-    `
+    `,
+    data: function(){
+      return {
+        resumeShowList : [],
+        curResume : 'none'
+      }
+    },
+    methods: {
+      resumeSelected : function(name) {
+        store.dispatch('setSelectedResume', name);
+        this.curResume = name;
+      }
+    },
+    computed: {
+      uploadedResume() {
+        return store.state.uploadedResume;
+      },
+      resumeList() {
+        return store.state.resumeList;
+      }
+    },
+    watch: {
+      uploadedResume: function(newResume, oldResume) {
+        if (newResume != oldResume) {
+          for (resume in store.state.resumeList) {
+            this.resumeShowList.push(resume);
+          }
+        }
+      }
+    }
 })
