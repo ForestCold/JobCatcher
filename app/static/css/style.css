@@ -53,3 +53,16 @@
 .side-nav li > a {
   font-size: 12px;
 }
+
+#index-banner {
+    background-image: url(/images/bg.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.index-icon {
+  width: 100px;
+  height: 100px;
+  margin: 5px;
+  border-radius:50%;
+}

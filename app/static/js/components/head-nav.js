@@ -18,6 +18,10 @@ var headNav = Vue.component('head-nav', {
     data: function(){
       return {
         'modules' : [{
+          'name' : 'home',
+          'text' : 'Home',
+          'icon' : 'home'
+        },{
           'name' : 'analysis',
           'text' : 'Analysis',
           'icon' : 'pageview'
@@ -35,8 +39,12 @@ var headNav = Vue.component('head-nav', {
     },
     methods: {
       moduleActive : function(name) {
-        this.curModule = name;
-        store.dispatch('setSelectedModule', name);
+        if (name == "home") {
+          window.location.href="index.html";  
+        } else {
+          this.curModule = name;
+          store.dispatch('setSelectedModule', name);
+        }
       }
     }
 })
