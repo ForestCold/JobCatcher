@@ -9,6 +9,7 @@ var preview = Vue.component('preview', {
     },
     methods: {
       renderPDF(url) {
+        url = "uploaded_files/" + url;
         var options = {
           height: "600px",
           page: '2',

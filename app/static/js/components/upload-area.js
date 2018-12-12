@@ -56,20 +56,50 @@ var uploadArea = Vue.component('upload', {
 
       $('.modal').modal();
 
-      var uppy = Uppy.Core();
-      uppy.use(Uppy.Dashboard, {
-              inline: true,
-              width: '100%',
-              height: '100%',
-              target: '#upload-resume-area',
-              allowMultipleUploads: false,
-              hideCancelButton: false
-          }).use(Uppy.XHRUpload, {
-              endpoint: '/upload',
-              fieldName: 'file'
-          })
+      // var uppy = new Uppy.Core({ debug: true, autoProceed: true });
+      //
+      // uppy.use(Uppy.FileInput, { target: '.UppyForm', replaceTargetContent: false })
+      //     .use(Uppy.XHRUpload, {
+      //         endpoint: '/upload',
+      //         fieldName: 'file'
+      //     })
 
-      this.renderUppy(uppy);
+      // $(".uppy-FileInput-btn")
+      //    .append("<i class='material-icons' style='color:#495a6e'>add</i>");
+
+      // uppy.use(Uppy.ProgressBar, {
+      //   target: 'body',
+      //   fixed: true,
+      //   hideAfterFinish: false
+      // })
+
+      // var uppy = Uppy.Core({
+      //   restrictions: {
+      //     allowedFileTypes: [".pdf"]
+      //   }
+      // });
+
+      // uppy.use(Uppy.Dashboard, {
+      //         inline: true,
+      //         width: '100%',
+      //         height: '100%',
+      //         target: '#upload-resume-area',
+      //         trigger: '.UppyModalOpenerBtn',
+      //         replaceTargetContent: true,
+      //         showProgressDetails: true,
+      //         note: 'Images and video only, 2–3 files, up to 1 MB',
+      //         height: 470,
+      //         metaFields: [
+      //           { id: 'name', name: 'Name', placeholder: 'file name' },
+      //           { id: 'caption', name: 'Caption', placeholder: 'describe what the image is about' }
+      //         ],
+      //         browserBackButtonClose: true
+      //     }).use(Uppy.XHRUpload, {
+      //         endpoint: '/upload',
+      //         fieldName: 'file'
+      //     })
+
+      // this.renderUppy(uppy);
 
     },
     methods: {
@@ -80,14 +110,17 @@ var uploadArea = Vue.component('upload', {
         }).on('complete', (result) => {
           var id = "uppy_" + result.successful[0].id;
           var name = result.successful[0].name;
-          document.getElementById(id).onclick = function() {
-            _this.selectedResume = "uploaded_files/" + name;
-            store.dispatch('setSelectedResume', _this.selectedResume);
-          };
+          // document.getElementById(id).onclick = function() {
+          //   _this.selectedResume = "uploaded_files/" + name;
+          //   store.dispatch('setSelectedResume', _this.selectedResume);
+          // };
           this.resumeCompleteStatus = true;
         }).on('upload-success', (file, response) => {
-          this.selectedResume = response;
-          $('#modal1').modal('open');
+          this.selectedResume = file.name;
+          // $('#modal1').modal('open');
+          store.dispatch('setSelectedResume', this.selectedResume);
+          store.dispatch('setUploadedResume', this.selectedResume);
+          store.dispatch('addResumeInfo', this.curResume);
         })
       },
       resumeSubmit() {

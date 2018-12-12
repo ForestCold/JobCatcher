@@ -24,11 +24,5 @@ def pdf_parser(data):
 
     return data
 
-def extract_keywords(file_path):
-    txt = pdf_parser(file_path)
-    return keywords(txt,lemmatize=True)
-
-if __name__ == "__main__":
-    print extract_keywords('resume.pdf')
-# with open('resume_extracted.txt', 'w') as f:
-#     f.write(pdf_parser('resume.pdf'))
+with open('resume_extracted.txt', 'w') as f:
+    f.write(pdf_parser('resume.pdf'))

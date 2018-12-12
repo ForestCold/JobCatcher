@@ -3,7 +3,6 @@ from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 
-
 def train(train_path="data.csv"):
     stopWords = stopwords.words("english")
     df = pd.read_csv(train_path)

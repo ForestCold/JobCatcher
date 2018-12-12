@@ -5473,11 +5473,10 @@ button.btn-floating {
 }
 
 .dropdown-content li > a, .dropdown-content li > span {
-  font-size: 16px;
-  color: #26a69a;
+  color: #78c5af;
   display: block;
   line-height: 22px;
-  padding: 14px 16px;
+  padding: 16px;
 }
 
 .dropdown-content li > span > label {
@@ -5744,7 +5743,7 @@ button.btn-floating {
 }
 
 .collapsible-body {
-  /*display: none;*/
+  display: none;
   border-bottom: 1px solid #ddd;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -5998,7 +5997,7 @@ input[type=search]:not(.browser-default),
 textarea.materialize-textarea {
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid #9e9e9e;
+  border-bottom: 1px dashed #495a6e;
   border-radius: 0;
   outline: none;
   height: 3rem;
@@ -6356,7 +6355,7 @@ textarea.materialize-textarea + label:after, .select-wrapper + label:after {
 }
 
 .input-field label {
-  color: #9e9e9e;
+  color: #495a6e;
   position: absolute;
   top: 0;
   left: 0;
@@ -7007,7 +7006,8 @@ select {
   cursor: pointer;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid #9e9e9e;
+  border-bottom: 1px dashed #495a6e;
+  color: #495a6e;
   outline: none;
   height: 3rem;
   line-height: 3rem;
@@ -7023,7 +7023,7 @@ select {
 }
 
 .select-wrapper span.caret {
-  color: initial;
+  color: #495a6e;
   position: absolute;
   right: 0;
   top: 0;
@@ -7191,7 +7191,7 @@ input[type=range] + .thumb {
   height: 0;
   width: 0;
   border-radius: 50%;
-  background-color: #26a69a;
+  background-color: #78c5ae;
   margin-left: 7px;
   -webkit-transform-origin: 50% 50%;
           transform-origin: 50% 50%;
@@ -7504,13 +7504,13 @@ input[type=range]:focus::-ms-fill-upper {
 .side-nav .user-view .name,
 .side-nav .userView .name {
   margin-top: 16px;
-  font-weight: 500;
+  /*font-weight: 500;*/
 }
 
 .side-nav .user-view .email,
 .side-nav .userView .email {
   padding-bottom: 16px;
-  font-weight: 400;
+  /*font-weight: 400;*/
 }
 
 .drag-target {

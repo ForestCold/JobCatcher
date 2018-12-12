@@ -6,21 +6,21 @@ var app = new Vue({
     components: {
       'head-nav' : headNav,
       'side-nav' : sideNav,
-      'upload-area' : uploadArea,
       'analysis-area' : analysisArea,
-      'recommendation-area' : recommendationArea
+      'recommendation-area' : recommendationArea,
+      'favorite-area' : favoriteArea
     },
     template: `
       <side-nav></side-nav>
       <head-nav></head-nav>
-      <upload-area v-if="selectedModule=='upload'"></upload-area>
       <analysis-area v-if="selectedModule=='analysis'"></analysis-area>
       <recommendation-area v-if="selectedModule=='recommendation'"></recommendation-area>
+      <favorite-area v-if="selectedModule=='favorite'"></favorite-area>
     `,
     data: function() {
     },
     ready: function() {
-      
+
     },
     methods: {
 

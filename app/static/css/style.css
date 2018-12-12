@@ -15,7 +15,7 @@
 
 /* upload */
 .area {
-  padding: 50px;
+  padding: 20px;
   margin-left: 230px;
 }
 
@@ -43,4 +43,13 @@
   margin-left: 850px;
   margin-right: 50px;
   margin-top: 50px;
+}
+
+.side-nav li.active {
+  background-color: rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #78c5ae;
+}
+
+.side-nav li > a {
+  font-size: 12px;
 }

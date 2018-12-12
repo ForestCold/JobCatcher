@@ -14,7 +14,7 @@ var keywords = Vue.component('keywords', {
       reload : function(selectedResume) {
         $.ajax({
             method: 'GET',
-            url: 'analysis/' + selectedResume.replace("uploaded_files/", ""),
+            url: 'analysis/' + selectedResume,
             success: function(resp) {
                 if (!resp || resp.status !== "success") {
                     resp = $.parseJSON(resp)

@@ -18,10 +18,6 @@ var headNav = Vue.component('head-nav', {
     data: function(){
       return {
         'modules' : [{
-          'name' : 'upload',
-          'text' : 'Upload',
-          'icon' : 'cloud_upload'
-        },{
           'name' : 'analysis',
           'text' : 'Analysis',
           'icon' : 'pageview'
@@ -29,8 +25,12 @@ var headNav = Vue.component('head-nav', {
           'name' : 'recommendation',
           'text' : 'Recommendation',
           'icon' : 'sort'
+        },{
+          'name' : 'favorite',
+          'text' : 'Favorite',
+          'icon' : 'favorite'
         }],
-        curModule : 'upload'
+        curModule : 'analysis'
       }
     },
     methods: {

@@ -2,10 +2,11 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
-    'selectedModule' : 'upload',
-    'selectedResume' : 'none',
-    'resumeList' : {},
-    'uploadedResume' : 'none'
+    'selectedModule' : 'analysis',
+    'selectedResume' : 'example.pdf',
+    'favoriteJobs' : {},
+    'uploadedResume' : 'example.pdf',
+    'allJobs' : {}
   },
   mutations: {
     updateSelectedModule (state, selectedModule) {
@@ -17,14 +18,25 @@ const store = new Vuex.Store({
     updateUpdatedResume (state, uploadedResume) {
       state.uploadedResume = uploadedResume;
     },
-    updateResumeList (state, resumeInfo) {
-      var selectedResumeInfo = resumeInfo;
-      state.resumeList[state.selectedResume] = {
-        'name' : resumeInfo.name,
-        'domain' : resumeInfo.domain,
-        'experience' : resumeInfo.experience,
-        'type' : resumeInfo.type
-      };
+    updateFavoriteJobs (state, data) {
+      var resume = data.resume;
+      var job = data.job;
+      if (! (resume in state.favoriteJobs)) {
+        state.favoriteJobs[resume] = {};
+      }
+      if (job.favorite) {
+        state.favoriteJobs[resume][job.id] = job;
+      } else {
+        delete state.favoriteJobs[resume][job.id]
+      }
+    },
+    updateAllJobs (state, data) {
+      var resume = data.resume;
+      var jobs = data.job;
+      state.allJobs[resume] = {}
+      for (index in jobs) {
+        state.allJobs[resume][jobs[index].id] = jobs[index]
+      }
     }
   },
   actions: {
@@ -37,8 +49,11 @@ const store = new Vuex.Store({
     setUploadedResume (state, uploadedResume) {
       this.commit("updateUpdatedResume", uploadedResume);
     },
-    addResumeInfo (state, resumeInfo) {
-      this.commit("updateResumeList", resumeInfo);
+    setFavoriteJobs (state, data) {
+      this.commit("updateFavoriteJobs", data);
+    },
+    setAllJobs (state, data) {
+      this.commit("updateAllJobs", data);
     }
   }
 })
