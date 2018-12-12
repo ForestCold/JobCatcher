@@ -1,0 +1,77 @@
+FANG WANG
+
+Mobile: (678) 956-9682 (cid:5) Email: fangwang@gatech.edu
+
+EDUCATION
+
+Georgia Institute of Technology
+M.S. in Computational Science and Engineering
+
+Peking University
+B.S. in Computer Science and Technology
+
+EXPERIENCE
+
+Sep 2018 - Dec 2019 Expected
+Atlanta, GA
+
+Sep 2013 - July 2017
+Beijing, China
+
+ByteDance Inc.
+Jun 2018 - Aug 2018
+Software Engineer Intern
+Beijing, China
+· Worked as a backend engineer with a team to maintain and develop a consumer ﬁnance application
+· Developed RESTful Web Services with Go, Redis, Kafka and used Thrift as RPC framework to provide RPC
+APIs for other callers
+· Implemented a probability lottery module and used it to build several marketing activity modules such as lottery
+turntables and red envelopes
+· Developed an activity template conﬁguration system for operators to upload images, set conﬁguration and auto-
+matically generate activity pages
+
+Institute of Computer Science and Technology, Peking University
+Research Assistant to Prof. Weiwei Sun
+· Worked on optimization of neural dependency parsers
+1) Introduced high-order features to the neural transition-based parser and implemented bi-directional parsing
+2) Extracted second-order features and used them for maximum subgraph parsing
+· Adopted syntax and dependency parsing frameworks to discourse parsing task with elementary discourse units
+embedded via LSTM-minus
+
+Sep 2017 - Feb 2018
+Beijing, China
+
+Yuanfudao Inc.
+Jul 2016 - Aug 2016
+Software Engineer Intern
+Beijing, China
+· Implemented a P2P branch of the live engine project to test the video encoding performance under weak network
+· Built weak network environment with the ATC tool and wrote scripts to launch automatic tests and collect data
+from RTCP packets for analysis
+
+SELECTED PROJECTS
+
+Two-list Transition Based Semantic Dependency Parser
+· Implemented a transition-based semantic dependency parser from scratch with C++
+· Adopted two-list transition system to accommodate non-projective graph-structured representation
+· Implemented a structured perceptron as classiﬁer and exploited beam search algorithm
+· Extracted lexical features and structural features derived from conﬁgurations
+Corpus-Based QA System Using Chinese Wikipedia Corpus
+· Implemented a search engine for oﬀ-line Chinese Wiki Corpus with Inverted Index
+· Parsed the natural language questions and returned candidate sentences ranked by TF-IDF features
+OS Labs on Nachos
+Sep 2015 - Jan 2016
+· Designed strategies and implemented modules for Nachos including threads, synchronization, virtual memory,
+and ﬁle system (C++)
+
+Jun 2017 - July 2017
+
+Nov 2016 - Dec 2016
+
+TECHNICAL STRENGTHS
+
+Programming Languages
+
+C/C++, Python, Go, Java, Bash, SQL
+
+

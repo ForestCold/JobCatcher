@@ -1,43 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <title>Job Catcher</title>
+  <link type="text/css" rel="stylesheet" href="lib/jquery-ui/jquery-ui.min.css" />
+  <link type="text/css" rel="stylesheet" href="lib/materialize/css/materialize.css">
+  <link type="text/css" rel="stylesheet" href="lib/uppy/uppy.min.css">
+  <link type="text/css" rel="stylesheet" href="lib/jquery-tags/prettytag.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="css/style.css" />
 
-	<head>
-		<title>Job Catcher</title>
-		<link type="text/css" rel="stylesheet" href="lib/jquery-ui/jquery-ui.min.css" />
-		<link type="text/css" rel="stylesheet" href="lib/materialize/css/materialize.css">
-		<link type="text/css" rel="stylesheet" href="lib/uppy/uppy.min.css">
-		<link type="text/css" rel="stylesheet" href="lib/jquery-tags/prettytag.css">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		<link type="text/css" rel="stylesheet" href="css/style.css" />
+  <script type="text/javascript" src="lib/jquery/jquery-1.10.1.min.js"></script>
+  <script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="lib/jsdelivr/es6-promise.auto.min.js"></script>
+  <script type="text/javascript" src="lib/jsdelivr/fetch.umd.min.js"></script>
+  <script type="text/javascript" src="lib/materialize/js/materialize.js"></script>
+  <script type="text/javascript" src="lib/vue/vue.min.js"></script>
+  <script type="text/javascript" src="lib/vue/vuex.js"></script>
+  <script type="text/javascript" src="lib/uppy/uppy.min.js"></script>
+  <script type="text/javascript" src="lib/pdfobject/pdfobject.min.js"></script>
+  <script type="text/javascript" src="lib/jquery-tags/jquery.prettytag.js"></script>
+</head>
+<body>
+  <div class="navbar-fixed">
+    <nav>
+      <div class="nav-wrapper grey lighten-5">
+        <a href="#" class="brand-logo"><img class="rect" src="images/iconw.png" style="height: 60px"></a>
+      </div>
+    </nav>
+  </div>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center white-text">Job Catcher</h1>
+      <div class="row center">
+        <h5 class="header col s12 light white-text">Ready to start your job search?</h5>
+      </div>
+      <div class="row center">
+        <a href="/app.html" id="download-button" class="btn-large waves-effect waves-light" style="background-color:#91c788">Let's Go</a>
+      </div>
+      <br><br>
 
-		<script type="text/javascript" src="lib/jquery/jquery-1.10.1.min.js"></script>
-		<script type="text/javascript" src="lib/jquery-ui/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="lib/jsdelivr/es6-promise.auto.min.js"></script>
-		<script type="text/javascript" src="lib/jsdelivr/fetch.umd.min.js"></script>
-		<script type="text/javascript" src="lib/materialize/js/materialize.js"></script>
-		<script type="text/javascript" src="lib/vue/vue.min.js"></script>
-		<script type="text/javascript" src="lib/vue/vuex.js"></script>
-		<script type="text/javascript" src="lib/uppy/uppy.min.js"></script>
-		<script type="text/javascript" src="lib/pdfobject/pdfobject.min.js"></script>
-		<script type="text/javascript" src="lib/jquery-tags/jquery.prettytag.js"></script>
-	</head>
+    </div>
+  </div>
 
-	<body>
-		<div id="app">
-			<footer class="center footer" style="color:#555">
-				&copy; 2018 - HongTing Liu, Hanfei Lin, Yiyang Wang - CS510 Final Project
-			</footer>
-		</div>
-	</body>
 
-		<script type="text/javascript" src="js/components/head-nav.js"></script>
-		<script type="text/javascript" src="js/controllers/store.js"></script>
-		<script type="text/javascript" src="js/components/side-nav.js"></script>
-		<script type="text/javascript" src="js/components/preview.js"></script>
-		<script type="text/javascript" src="js/components/keywords.js"></script>
-		<script type="text/javascript" src="js/components/analysis-area.js"></script>
-		<script type="text/javascript" src="js/components/recommendation-area.js"></script>
-		<script type="text/javascript" src="js/components/favorite-area.js"></script>
-		<script type="text/javascript" src="js/controllers/app.js"></script>
+  <div class="container">
+    <div class="section">
 
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><img class="index-icon" src="images/1.png"></h2>
+            <h5 class="center">Resume Organization</h5>
+            <p class="light">We provide an organize system of managing your resumes, with fast and easy way to upload and and compare between each version. </p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><img class="index-icon" src="images/2.png"></h2>
+            <h5 class="center">Resume Analysis</h5>
+            <p class="light">By utilizing information retrieval and active learning algorithms, we were able to create a analysis report for your resume containing extracted keywords and protential positions. Additionally, these informations are used for our job recommendation system.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center light-blue-text"><img class="index-icon" src="images/3.png"></h2>
+            <h5 class="center">Job recommendation</h5>
+            <p class="light">Our system will recommend related positions for you based on your uploaded resume, selected location, and experience. You can either apply directly, or bookmark a job in the job list. </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <br><br>
+  </div>
+
+  <footer class="page-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col l9 s12">
+          <h5 class="white-text">UIUC CS 510: Advanced Information Retrieval</h5>
+          <p class="grey-text text-lighten-4">This is a graduate-level course covering the advanced topics in the growing field of information retrieval (IR) where the goal is to study how to build intelligent software tools to help users management and make use of large amounts of unstructured (typically textual) data.</p>
+        </div>
+        <div class="col l3 s12">
+          <h5 class="white-text">Connect</h5>
+          <ul>
+            <li><a class="white-text" href="#!">GitHub</a></li>
+            <li><a class="white-text" href="#!">Web Page</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+      Made by Hongting Liu, Hanfei Lin, Yiyang Wang</a>
+      </div>
+    </div>
+  </footer>
+
+  </body>
 </html>
