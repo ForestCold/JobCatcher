@@ -66,15 +66,13 @@ def upload_file():
 @app.route('/analysis/<filename>/', methods=['GET'])
 def analysis_file(filename):
 	file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-	with open(file_url.replace("pdf","txt"), 'r') as f:
-		resume = f.read()
 	topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
 				   'data':load_topic(os.path.join('app/static/', 'topic_data')),
 				   'business':load_topic(os.path.join('app/static/', 'topic_business')),
 				   'mobile':load_topic(os.path.join('app/static/', 'topic_mobile')),
 				   'web':load_topic(os.path.join('app/static/', 'topic_web'))
 				   }
-	resume_freq = load_resume(os.path.join('app/static/', 'resume_extracted2.txt'))
+	resume_freq = load_resume(file_url.replace("pdf","txt"))
 	keyword = json.dumps(infer_topic(topic_freqs, resume_freq))
 	# print keywords(resume,lemmatize=True)
 	return keyword;
