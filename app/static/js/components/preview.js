@@ -2,7 +2,7 @@ Vue.config.devtools = true;
 
 var preview = Vue.component('preview', {
     template: `
-      <div id="preview-area"></div>
+      <div id="preview-area" class="col s6"></div>
     `,
     ready: function() {
       this.renderPDF(this.selectedResume);

@@ -40,7 +40,7 @@ var headNav = Vue.component('head-nav', {
     methods: {
       moduleActive : function(name) {
         if (name == "home") {
-          window.location.href="index.html";  
+          self.location="index.html";  
         } else {
           this.curModule = name;
           store.dispatch('setSelectedModule', name);

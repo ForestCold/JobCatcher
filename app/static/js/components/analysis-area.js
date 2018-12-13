@@ -6,7 +6,9 @@ var analysisArea = Vue.component('analysis-area', {
       'keywords' : keywords
     },
     template: `
-      <preview></preview>
-      <keywords></keywords>
+      <div class="row" style="margin-left:240px">
+        <preview></preview>
+        <keywords></keywords>
+      </div>
     `
 })

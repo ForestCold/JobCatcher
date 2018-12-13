@@ -1,0 +1,107 @@
+éYami(Hanfei) Lin 
+Software Development Engineer 
+Education 
+University of Illinois at Urbana-Champaign (UIUC) 
+Master of Computer Science 
+East China Normal University (ECNU) 
+B.Eng. in Software Engineering 
+Skills 
+
+504 E. Clark St. #34. Champaign, 61820 
+magic.yami.635@gmail.com     1(217) - 3050577 
+                                    LinkedIn | GitHub | Portfolio | Blog | YouTube 
+
+GPA 3.6/4.0 (Rank: 1/53) | National Scholarship |Outstanding Graduation 
+
+Aug. 2017 – Exp. Dec. 2018 
+
+GPA 3.96/4.0 
+Sep.2012 – Jul.2016 
+
+Language 
+
+Java | Python | C++ | C# | PHP | Lua | JavaSript | HTML5 | CSS3 | SQL| Matlab| Verilog 
+
+Framework  Vue.js | Angular.js | React.js| d3.js | FLASK| Spring| LAMP| Spock | MySQL| Druid| Hadoop| 
+
+Tools 
+
+Jenkins | TravisCI | Git | SourceTree | Selenium | Linux/Unix | Webpack | Grunt | Gulp |  Yeoman | 
+Maven| Groovy | AWS| Heroku| Cpanel | OpenStack| Digital Ocean | Unity3D 
+
+ Jun. 2018 – Present 
+
+Certification  EMC Academic Associate (Information Storage and Management)  
+Work Experience 
+Yahoo! (Oath Inc.) - Ads., Data Platform & System Engineering Dept. 
+Java, Lua, Jackson, Druid/Hadoop, Groovy/Maven/Spring/Spock, Linux/Unix 
+
+Software Engineer Intern 
+-  Developed Luthier, a smooth and robust external configuration module for  Fili [link] (an Open Source REST API 
+written in Java, makes web services for time series reporting with Big Data analytics engines like Druid and Hive). 
+Allowing users to configure Fili through a little line of Lua code.  
+
+-  Contribute more than 5000 line codes, have an enormous impact within the company for the analytics stacks that 
+
+rely on Fili. 
+
+HP (Hewlett Packard Enterprise) - ALM Group, Software Dept. 
+AngularJS, LESS/Sass, Yeoman/Gulp/Bower, IONIC/Cordova 
+
+Software Engineer Intern 
+-  Developed the frontend of HP core product ALM Octane [link] (a Software Development Life Cycle Management 
+
+Jul. 2015 – Jan. 2016 
+
+System) and ALM QoT (an SDLC management system on the mobile end). 
+
+-  Contribute about 5000 line codes and a dashboard to visualize the software lifecycle process. 
+
+Research Experience 
+New York University                                                                                                         Jan. 2016 – Jun. 2017 
+FLASK, Python, D3.js                                                                                                                 Research Assistant 
+
+- 
+- 
+
+Implemented a new d3 based visual analytics system to support user-guided rare category exploration. 
+Proposed a novel  machine learning algorithm (LOFRCD) to iteratively identify more accurate rare categories in 
+response to user-provided feedback.  
+
+-  Published an article on IEEE TVCG as the first author. Invited as Reporter on IEEE VIS 2017 conference. 
+
+Project Experience (more projects on hanfeilin.me) 
+
+•  My Portfolio [hanfeilin.me]  (LAMP + Wordpress) | My blog [hanfeilin.com] (Hexo + Node.js) 
+•  DonkeyDokie [link]  (Materialize + Vue.js + LAMP + AWS) 
+Leader & Full Stack Developer of 4 
+-  Developed  a  platform  with  trustworthy  users  that  helps  with  travel  patterns  hunting,  trip  organizing  and  etc. 
+
+Including a recommendation system, data visualization and web-socket based real-time chat system. 
+
+Publications 
+
+• 
+
+• 
+
+Lutz, Mark. He Qin & Ming Lin(Translator), Hanfei Lin(Reviewer) Learning Python 5th (Chinese Version). Ituring 
+Community and China Machine Press, Exp. Jul. 2018. 
+Lin,  Hanfei,  et  al.  "RcLens:  Interactive  rare  category  exploration  and  identification." IEEE  transactions  on 
+visualization and computer graphics 24.7 (2018): 2223-2237. [Link] 
+
+•  Yuhua Liu, Hanfei Lin, et al. "An application of optimization method for storyline based on cluster analysis." The, 
+
+International Symposium, ACM 2017:24-28. [Link] 
+
+•  Xiwen Chen, Hanfei Lin, et al.  “A Process-Visible Compiler Aimed for Teaching Assistant” Atlantis Press 15.1 (2016): 
+
+2352-5398 [Link] 
+
+•  Hanfei Lin, et al. Design and Application of a Process-Visible Compiler[J]. Software Engineering And Applications, 
+
+2015,04(5):89-95. [Link] 
+
+ 
+
+
