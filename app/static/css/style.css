@@ -33,9 +33,7 @@
 
 #preview-area {
   height: 900px;
-  width: 600px;
-  padding: 50px;
-  margin-left: 240px;
+  padding-top: 50px;
   float: left;
 }
 
