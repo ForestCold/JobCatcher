@@ -6,7 +6,9 @@ extractors:
  experience:
   - Data scientist
   - SDE
-  - [developer, software developer, software engineer, dev]
+  - developer
+  - software developer
+  - software engineer
   - Data Analyst
   - Business
   - Web
@@ -24,22 +26,16 @@ extractors:
  platforms:
   - Linux
   - Windows
-  - [Mac, MacOS]
+  - Mac
   - IOS
   - Android
-
-
- Operating System:
-  -
-
- OS:
-  -
 
 
  database:
   - SQL
   - MySQL
-  - [Postgress, Postgresql]
+  - Postgress
+  - Postgresql
   - Oracle
   - MS SQL Server
   - SQLite
@@ -69,10 +65,9 @@ extractors:
   - Memcached
 
  programming:
-  - [java, JavaEE]
   - Java
   - C
-  - C++
+  - C\+\+
   - C#
   - Python
   - Visual Basic .NET
@@ -125,8 +120,12 @@ extractors:
 
 
  machinelearning:
-  - [sklearn, scikit-learn, sk-learn]
-  - [tensorflow, tf, tensor-flow]
+  - sklearn
+  - scikit-learn
+  - sk-learn
+  - tensorflow
+  - tf
+  - tensor-flow
   - keras
   - h20
 
