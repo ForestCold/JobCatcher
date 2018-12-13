@@ -8,7 +8,7 @@ from nltk.stem.lancaster import LancasterStemmer
 DEFAULT_JDSET_PATH = os.path.join('.', 'naukri_com-job_sample.csv')
 MATCHING_TITLES = ['software', '(?:big data)|(?:machine learning)|(?:data scientist)',
                    '(?:web)|(?:front end)', 'backend', 'full stack',
-                   'mobile',  'android', 'ios', 'application', 'security', 'network',
+                   '(?:mobile)|(?:android)|(?:ios)', 'application', 'security', 'network',
                    'Operations', 'business',  'UI ', '(?:database)|(?:SQL)', 'hardware']
 
 def load_jd_dataset(file_path = DEFAULT_JDSET_PATH):
@@ -60,6 +60,10 @@ def get_words_freq(string, freq_counter = collections.Counter()):
         pass
 
     return freq_counter
+
+# def auto_word_counter():
+#     for title in MATCHING_TITLES:
+#         output_name = str(title.split())
 
 
 if __name__ == '__main__':

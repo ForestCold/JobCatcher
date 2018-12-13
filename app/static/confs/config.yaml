@@ -4,33 +4,124 @@ data_schema_dir: ../data/schema
 
 extractors:
  experience:
-  - [Teacher, teaching, tutor]
+  - Data scientist
+  - SDE
   - [developer, software developer, software engineer, dev]
-  - trader
+  - Data Analyst
+  - Business
+  - Web
+  - Front-end
+  - Front end
+  - Full stack
+  - full-stack
+  - security
+  - network
+  - application
+  - mobile
+  - IOS
+  - Android
 
  platforms:
   - Linux
   - Windows
   - [Mac, MacOS]
+  - IOS
+  - Android
+
+
+ Operating System:
+  -
+
+ OS:
+  -
+
 
  database:
   - SQL
   - MySQL
   - [Postgress, Postgresql]
   - Oracle
+  - MS SQL Server
+  - SQLite
+  - Redis
+  - Access
+  - MongoDB
+  - DB2
+  - Cassandra
+  - PostgreSQL
+  - Elasticsearch
+  - Teradata
+  - SAP Adaptive server
+  - Solr
+  - Splunk
+  - HBase
+  - Hive
+  - SAP HANA
+  - CouchDB
+  - Azure
+  - MS Azure SQL Database
+  - Informix
+  - Couchbase
+  - Filemaker
+  - Neo4j
+  - DynamoDB
+  - Amazon DynamoBD
+  - Memcached
 
  programming:
   - [java, JavaEE]
+  - Java
   - C
   - C++
   - C#
-  - .NET
-  - Matlab
-  - R
-  - python
-  - VHDL
+  - Python
+  - Visual Basic .NET
   - PHP
   - JavaScript
+  - Delphi
+  - Object Pascal
+  - Swift
+  - Perl
+  - Ruby
+  - Assembly language
+  - R
+  - Visual Basic
+  - Objective-C
+  - Go
+  - MATLAB
+  - PL
+  - SQL
+  - Scratch
+  - SAS
+  - D
+  - Dart
+  - ABAP
+  - COBOL
+  - Ada
+  - Fortran
+  - Transact-SQL
+  - Lua
+  - Scala
+  - Logo
+  - F#
+  - Lisp
+  - LabVIEW
+  - Prolog
+  - Haskell
+  - Scheme
+  - Groovy
+  - RPG
+  - Apex
+  - Erlang
+  - MQL4
+  - Rust
+  - Bash
+  - Ladder Logic
+  - Q
+  - Julia
+  - Alice
+  - VHDL
+  - Awk
 
 
  machinelearning:
@@ -38,27 +129,6 @@ extractors:
   - [tensorflow, tf, tensor-flow]
   - keras
   - h20
-
-
- universities:
-  - [TU Delft, TUDelft, Delft University of Technology]
-  - [Univerity of Twente, UTwente]
-  - [University of Amsterdam, UvA]
-  - [Vrije Univesriteit, VU University, VU Amsterdam, VU]
-  - MIT
-
- languages:
-  - Dutch
-  - English
-  - German
-  - Spanish
-  - [Chinese, Mandarin]
-
- hobbies:
-  - [swimming, swim]
-  - [soccer, football]
-  - painting
-  - reading
 
  open-source:
   - github
