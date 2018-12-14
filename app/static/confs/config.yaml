@@ -30,7 +30,6 @@ extractors:
   - IOS
   - Android
 
-
  database:
   - SQL
   - MySQL
@@ -78,6 +77,8 @@ extractors:
   - Swift
   - Perl
   - Ruby
+  - Html
+  - CSS
   - Assembly language
   - R
   - Visual Basic
@@ -118,20 +119,127 @@ extractors:
   - VHDL
   - Awk
 
-
  machinelearning:
   - sklearn
   - scikit-learn
   - sk-learn
   - tensorflow
-  - tf
-  - tensor-flow
   - keras
-  - h20
+  - classification
+  - supervised
+  - unsupervised
+  - cluster
+  - SVM
+  - regression
+  - ensemble
+  - Adaboost
+  - CNN
+  - RNN
+  - Bayes
 
  open-source:
+  - git
   - github
   - bitbucket
   - gitlab
   - sourceforge
   - gitkraken
+  - arx
+  - bazaar
+  - bitkeeper
+  - codeville
+  - darcs
+  - dcvs
+  - fossil
+  - mercurial
+  - monotone
+  - svk
+  - veracity
+
+ code-review:
+  - Collaborator
+  - Review Assistant
+  - Codebrag
+  - Gerrit
+  - Codestriker
+  - Rhodecode
+  - Phabricator
+  - Crucible
+  - Veracode
+  - Review Assistant
+  - Review Board
+
+ distributed-system:
+  - hadoop
+  - spark
+  - kafka
+  - pig
+  - zookeeper
+  - hbase
+  - flume
+  - impala
+  - sqoop
+  - OOZIE
+  - Sentry
+  - hdfs
+  - mapreduce
+  - YARN
+  - Flink
+  - Solr
+
+ cloud-platforms:
+  - AWS
+  - cloud
+  - Azure
+  - dropbox
+  - box
+
+ virtulization-technology:
+  - vmware
+  - virtualbox
+  - hypervisor
+  - citrix
+  - hyper-v
+  - emulation
+  - bochs
+  - qemu
+  - kvm
+  - zones
+  - openVZ
+  - Docker
+
+ frontend-frameworks:
+  - Angular.JS
+  - React.JS
+  - Meteor.JS
+  - Vue.JS
+  - Backbone.JS
+  - jade
+  - UNDERSCORE.JS
+  - Boootstrap
+  - jQuery
+  - gulp
+  - grunt
+  - motion.js
+  - flux
+  - Knockout
+  - Ember.js
+
+ backend-frameworks:
+  - Django
+  - Spring
+  - Rails
+  - Symfony
+  - JSF
+  -
+
+
+ others:
+  - Unity
+  - unity3d
+  - XML
+  - JSON
+
+
+
+
