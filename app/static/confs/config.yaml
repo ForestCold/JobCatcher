@@ -231,8 +231,7 @@ extractors:
   - Rails
   - Symfony
   - JSF
-  -
-
+  - Node.js
 
  others:
   - Unity
