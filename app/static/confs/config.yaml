@@ -1,7 +1,3 @@
-resume_directory: ../data/input/example_resumes
-summary_output_directory: ../data/output
-data_schema_dir: ../data/schema
-
 extractors:
  experience:
   - Data scientist
@@ -39,7 +35,6 @@ extractors:
   - MS SQL Server
   - SQLite
   - Redis
-  - Access
   - MongoDB
   - DB2
   - Cassandra
