@@ -3,6 +3,7 @@ import os
 import sys
 import pandas as pd
 import string
+import pickle
 
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
@@ -34,8 +35,8 @@ sys.setdefaultencoding('utf8')
 
 @app.route('/')
 def root():
-	global tf, tfidf
-	tf, tfidf = train()
+	global tf, tfidf, df
+	tf, tfidf, df = train()
 	return app.send_static_file('index.html')
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -81,12 +82,15 @@ def analysis_file(filename):
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
 
-	global tf, tfidf, df
+	# global tf, tfidf, df
+	with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+		df = pickle.load(handle)
+
 	file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
 	with open(file_url.replace("pdf","txt"), 'r') as f:
 		resume = f.read()
-		recommendation_index = find_jobs(tf, tfidf, resume)
+		recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi', experience='1 - 3 yrs')
 
 	recommendation_job = []
 	for index in recommendation_index:
@@ -135,8 +139,9 @@ def pdf_parser(pdf):
 
 		return data
 
+
 def train(train_path = os.path.join('app/static/', 'naukri_com-job_sample.csv')):
-	global df
+
 	stopWords = stopwords.words("english")
 	df = pd.read_csv(train_path).fillna('N/A')
 
@@ -147,10 +152,26 @@ def train(train_path = os.path.join('app/static/', 'naukri_com-job_sample.csv'))
 	tfidf_matrix = tf.fit_transform(jd)
 	return tf, tfidf_matrix
 
+
 def find_jobs(tf, tfidf_matrix, query_content):
 	cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf_matrix).flatten()
 	related_docs_indices = cosine_similarities.argsort()[:-11:-1]
 	return related_docs_indices
+
+
+def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df,experience=None, location=None, n=5):
+	with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
+		tf = pickle.load(handle)
+	with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
+		tfidf = pickle.load(handle)
+	with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+		df = pickle.load(handle)
+	cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
+	related_docs_indices = cosine_similarities.argsort()
+	selected_df = df.ix[related_docs_indices]
+	selected_df =  selected_df.loc[(selected_df['experience'] == experience) & (selected_df['joblocation_address'].str.match(location))]
+	max_len = min(n, len(selected_df))
+	return selected_df.index.values.astype(int)[0:max_len]
 
 
 def purify_sentence(sentence):
