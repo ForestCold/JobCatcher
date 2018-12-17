@@ -22,6 +22,7 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from cStringIO import StringIO
 from cv_miner import extract_keywords
+from experience_filter import exp_req_filter
 
 debug = True
 
@@ -100,7 +101,7 @@ def recommend_jobs(filename):
         resume = f.read()
         # recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi',
         #                                                  experience='1 - 3 yrs')
-        recommendation_index = find_jobs(None, None, resume, 3)
+        recommendation_index = find_jobs(None, None, resume, 10)
 
     recommendation_job = []
     for index in recommendation_index:
@@ -128,6 +129,7 @@ def update_recommend_jobs(filter_data):
         resume = f.read()
 
     # recommend jobs
+    print experience
 
     return json.dumps(filter_data, separators=(',', ':'))
 
@@ -200,6 +202,7 @@ def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, experience=No
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
     related_docs_indices = cosine_similarities.argsort()
     selected_df = df.ix[related_docs_indices]
+    # exp_req_filter()
     selected_df = selected_df.loc[
         (selected_df['experience'] == experience) & (selected_df['joblocation_address'].str.match(location))]
     max_len = min(n, len(selected_df))
@@ -247,7 +250,7 @@ def infer_topic(topics, resume):
     topic_words = {}
     score = 0
     for topic_word in topics:
-        print topic_word
+        # print topic_word
         for key in resume:
             if key in topics[topic_word]:
                 score += topics[topic_word][key] * resume[key]
@@ -259,7 +262,7 @@ def infer_topic(topics, resume):
         score = 0
     topic_sum = sum(topic_scores.values())
     topic_ratio = {}
-    print "really intersting"
+    # print "really intersting"
     for val in topic_scores:
         topic_ratio[val] = float(topic_scores[val]) / topic_sum
     res = {}
