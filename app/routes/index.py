@@ -22,7 +22,8 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from cStringIO import StringIO
 from cv_miner import extract_keywords
-from experience_filter import exp_req_filter
+
+# from experience_filter import exp_req_filter
 
 debug = True
 
@@ -34,11 +35,18 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
+    tf = pickle.load(handle)
+with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
+    tfidf = pickle.load(handle)
+with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+    df = pickle.load(handle).fillna('N/A')
+    df.dropna(subset=['jobdescription'])
+    jd = df['jobdescription'].astype('U').tolist()
+
 
 @app.route('/')
 def root():
-    global tf, tfidf, df
-    # tf, tfidf, df = train()
     return app.send_static_file('index.html')
 
 
@@ -105,9 +113,8 @@ def recommend_jobs(filename):
 
     with open(file_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
-        # recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi',
-        #                                                  experience='1 - 3 yrs')
-        recommendation_index = find_jobs(None, None, resume, 10)
+        recommendation_index = find_jobs_with_conditions(resume, location=None, year=20)
+        # recommendation_index = find_jobs(None, None, resume, 10)
 
     recommendation_job = []
     for index in recommendation_index:
@@ -134,7 +141,34 @@ def update_recommend_jobs(filter_data):
     with open(resume_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
 
-    return json.dumps(filter_data, separators=(',', ':'))
+    # recommend jobs
+    year = 0
+    if experience == "All levels":
+        year = 0
+    elif experience == "Entry Level":
+        year = 0
+    elif experience == "Less Than Two Years":
+        year = 2
+    elif experience == "Two To Five Years":
+        year = 5
+    elif experience == "More Than Five Years":
+        year = 6
+
+    recommendation_index = find_jobs_with_conditions(resume, year=year, location=location, n=number)
+
+    # return json.dumps(filter_data, separators=(',', ':'))
+    recommendation_job = []
+    for index in recommendation_index:
+        recommendation_job.append({
+            'Company': df['company'][index],
+            'Position': df['jobtitle'][index],
+            'Url': '#',
+            'Location': df['joblocation_address'][index],
+            'Description': df['jobdescription'][index],
+            'Experience': df['experience'][index]
+        })
+
+    return json.dumps(recommendation_job)
 
 
 # private util functions #
@@ -169,46 +203,43 @@ def train(train_path=os.path.join('app/static/', 'naukri_com-job_sample.csv')):
 
 
 def find_jobs(tf, tfidf_matrix, query_content, n):
-    with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
-        tf = pickle.load(handle)
-    with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
-        tfidf = pickle.load(handle)
-    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle).fillna('N/A')
-        df.dropna(subset=['jobdescription'])
-        jd = df['jobdescription'].astype('U').tolist()
-
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
     key_factors = calc_similarity(query_content)
     k_max = max(key_factors)
     k_min = min(key_factors)
-    k_range = k_max-k_min
+    k_range = k_max - k_min
     c_max = max(cosine_similarities)
     c_min = min(cosine_similarities)
     c_range = c_max - c_min
-    factor = k_range/c_range*0.8
-    tmp_list = [ k_min+(float(x)-k_min)*factor for x in key_factors]
-    simlarities = cosine_similarities+tmp_list
-    top_n = -1-n
+    factor = k_range / c_range * 0.8
+    tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
+    simlarities = cosine_similarities + tmp_list
+    top_n = -1 - n
     related_docs_indices = simlarities.argsort()[:top_n:-1]
     print "top {} similar jobs".format(n)
     return related_docs_indices
 
-def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, year=2, location="Delhi", n=5):
-    with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
-        tf = pickle.load(handle)
-    with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
-        tfidf = pickle.load(handle)
-    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle).fillna('N/A')
-        df.dropna(subset=['jobdescription'])
+
+def find_jobs_with_conditions(query_content, year=10, location="Delhi", n=10):
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
-    related_docs_indices = cosine_similarities.argsort()
+    key_factors = calc_similarity(query_content)
+    k_max = max(key_factors)
+    k_min = min(key_factors)
+    k_range = k_max - k_min
+    c_max = max(cosine_similarities)
+    c_min = min(cosine_similarities)
+    c_range = c_max - c_min
+    factor = k_range / c_range * 0.8
+    tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
+    simlarities = cosine_similarities + tmp_list
+    related_docs_indices = simlarities.argsort()[::-1]
+
     selected_df = df.ix[related_docs_indices]
-    # selected_df = exp_req_filter(selected_df, low_bound=2)
-    experience = str(year)+" -"
-    selected_df = selected_df.loc[
-        (selected_df['experience'].str.match(experience)) & (selected_df['joblocation_address'].str.match(location))]
+    selected_df = filter_exp_req(selected_df, low_bound=year)
+
+    if location is not None:
+        selected_df = selected_df.loc[
+            (selected_df['joblocation_address'].str.match(location))]
     max_len = min(n, len(selected_df))
     return selected_df.index.values.astype(int)[0:max_len]
 
@@ -254,7 +285,6 @@ def infer_topic(topics, resume):
     topic_words = {}
     score = 0
     for topic_word in topics:
-        # print topic_word
         for key in resume:
             if key in topics[topic_word]:
                 score += topics[topic_word][key] * resume[key]
@@ -266,7 +296,6 @@ def infer_topic(topics, resume):
         score = 0
     topic_sum = sum(topic_scores.values())
     topic_ratio = {}
-    # print "really intersting"
     for val in topic_scores:
         topic_ratio[val] = float(topic_scores[val]) / topic_sum
     res = {}
@@ -285,7 +314,28 @@ def calc_similarity(content):
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
     resume_keywords = extract_keywords(content)
-    same_list=[]
+    same_list = []
     for lst in keywords_list:
         same_list.append(len(list(set(resume_keywords) & set(lst))))
     return same_list
+
+
+def apply_filter(string, low_bound):
+    try:
+        index = string.index('-')
+        if index > -1:
+            min_req = int(string[0:index])
+        else:
+            min_req = 10
+    except:
+        min_req = 10
+
+    if low_bound >= min_req:
+        return True
+    else:
+        return False
+
+
+def filter_exp_req(jds, low_bound):
+    filtered_jds = jds[jds['experience'].apply(lambda x: apply_filter(x, low_bound))]
+    return filtered_jds
