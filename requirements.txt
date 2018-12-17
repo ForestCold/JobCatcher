@@ -3,6 +3,6 @@ gunicorn
 numpy
 pandas
 nltk
-sklearn==0.19.0
+sklearn
 pdfminer
 pyyaml
