@@ -1,30 +1,27 @@
 {
-  "name": "college-maginifier",
+  "name": "job-catcher",
   "version": "1.0.0",
-  "description": "Visualizing types dependencies in your projects, and the Regression Tests Selection strategy of STARTS.",
-  "main": "index.js",
+  "description": "",
+  "main": "index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start" : "python app.py"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ForestCold/jobCatcher.git"
+    "url": "git+https://github.com/ForestCold/JobCatcher"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ForestCold/jobCatcher/issues"
+    "url": "https://github.com/ForestCold/JobCatcher"
   },
-  "homepage": "https://github.com/ForestCold/jobCatcher.git",
+  "homepage": "https://github.com/ForestCold/JobCatcher",
   "devDependencies": {
     "eslint": "^4.10.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-react": "^7.4.0"
-  },
-  "dependencies": {
-    "heatmap.js": "^2.0.5"
   }
 }
