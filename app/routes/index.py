@@ -21,6 +21,7 @@ from pdfminer.pdfpage import PDFPage
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from cStringIO import StringIO
+from cv_miner import extract_keywords
 
 debug = True
 
@@ -97,8 +98,9 @@ def recommend_jobs(filename):
 
     with open(file_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
-        recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi',
-                                                         experience='1 - 3 yrs')
+        # recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi',
+        #                                                  experience='1 - 3 yrs')
+        recommendation_index = find_jobs(None, None, resume, 3)
 
     recommendation_job = []
     for index in recommendation_index:
@@ -161,9 +163,30 @@ def train(train_path=os.path.join('app/static/', 'naukri_com-job_sample.csv')):
     return tf, tfidf_matrix
 
 
-def find_jobs(tf, tfidf_matrix, query_content):
-    cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf_matrix).flatten()
-    related_docs_indices = cosine_similarities.argsort()[:-11:-1]
+def find_jobs(tf, tfidf_matrix, query_content, n):
+    with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
+        tf = pickle.load(handle)
+    with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
+        tfidf = pickle.load(handle)
+    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+        df = pickle.load(handle)
+        df.dropna(subset=['jobdescription'])
+        jd = df['jobdescription'].astype('U').tolist()
+
+    cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
+    key_factors = calc_similarity(query_content)
+    k_max = max(key_factors)
+    k_min = min(key_factors)
+    k_range = k_max-k_min
+    c_max = max(cosine_similarities)
+    c_min = min(cosine_similarities)
+    c_range = c_max - c_min
+    factor = k_range/c_range*0.8
+    tmp_list = [ k_min+(float(x)-k_min)*factor for x in key_factors]
+    simlarities = cosine_similarities+tmp_list
+    top_n = -1-n
+    related_docs_indices = simlarities.argsort()[:top_n:-1]
+    print "top {} similar jobs".format(n)
     return related_docs_indices
 
 
@@ -186,7 +209,7 @@ def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, experience=No
 def purify_sentence(sentence):
     stop = stopwords.words('english') + list(string.punctuation)
     st = LancasterStemmer()
-    filtered_sentence = [st.stem(w) for w in word_tokenize(sentence.decode('utf-8').lower()) if
+    filtered_sentence = [w for w in word_tokenize(sentence.decode('utf-8').lower()) if
                          w not in stop and not w.isdigit()]
     return filtered_sentence
 
@@ -248,9 +271,9 @@ def infer_topic(topics, resume):
 
 
 def calc_similarity(content):
-    with open(os.path.join('./', 'keyword_lists.pickle'), 'rb') as handle:
+    with open(os.path.join('app/static/', 'keyword_lists.pickle'), 'rb') as handle:
         keywords_list = pickle.load(handle)
-    with open(os.path.join('./', 'df.pickle'), 'rb') as handle:
+    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
         df = pickle.load(handle)
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
