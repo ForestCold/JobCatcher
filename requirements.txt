@@ -1,8 +1,8 @@
 Flask
 gunicorn
-numpy
-pandas
-nltk
-sklearn
+numpy=1.15.4
+pandas=0.20.3
+nltk=3.2.1
+sklearn=0.19.0
 pdfminer
 pyyaml
