@@ -87,13 +87,9 @@ def analysis_file(filename):
     cv_info = infer_topic(topic_freqs, resume_freq)
     with open(file_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
-        print resume
-    print extract_keywords(resume)
-
     cv_info["keywords"] = extract_keywords(resume)
 
     keyword = json.dumps(cv_info)
-    print keyword
     # print keywords(resume,lemmatize=True)
     return keyword;
 
