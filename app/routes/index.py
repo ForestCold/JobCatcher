@@ -22,7 +22,6 @@ from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from cStringIO import StringIO
 
-
 debug = True
 
 UPLOAD_FOLDER = 'app/static/uploaded_files'
@@ -33,150 +32,155 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 reload(sys)
 sys.setdefaultencoding('utf8')
 
+
 @app.route('/')
 def root():
-	global tf, tfidf, df
-	tf, tfidf, df = train()
-	return app.send_static_file('index.html')
+    global tf, tfidf, df
+    # tf, tfidf, df = train()
+    return app.send_static_file('index.html')
+
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_file():
-	url = ""
-	if request.method == 'POST':
-		# check if the post request has the file part
-		if 'file' not in request.files:
-			flash('No file part')
-			return redirect(request.url)
-		file = request.files['file']
-		# if user does not select file, browser also
-		# submit an empty part without filename
-		if file.filename == '':
-			flash('No selected file')
-			url = redirect(request.url)
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-			file.save(file_url)
+    url = ""
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            url = redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_url)
 
-			with open(file_url.replace("pdf","txt"), 'w') as f:
-			    f.write(pdf_parser(file_url))
+            with open(file_url.replace("pdf", "txt"), 'w') as f:
+                f.write(pdf_parser(file_url))
 
-	return json.dumps("uploaded_files/" + filename)
+    return json.dumps("uploaded_files/" + filename)
+
 
 # generate keywords based on a file
 @app.route('/analysis/<filename>/', methods=['GET'])
 def analysis_file(filename):
-	file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-	topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
-				   'data':load_topic(os.path.join('app/static/', 'topic_data')),
-				   'business':load_topic(os.path.join('app/static/', 'topic_business')),
-				   'mobile':load_topic(os.path.join('app/static/', 'topic_mobile')),
-				   'web':load_topic(os.path.join('app/static/', 'topic_web')),
-				   'network': load_topic(os.path.join('app/static/', 'topic_network.txt')),
-				   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
-				   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
-				   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
-				   'data2': load_topic(os.path.join('app/static/', 'topic_data.txt '))
-				   }
-	resume_freq = load_resume(file_url.replace("pdf","txt"))
-	keyword = json.dumps(infer_topic(topic_freqs, resume_freq))
-	# print keywords(resume,lemmatize=True)
-	return keyword;
+    file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
+                   'business': load_topic(os.path.join('app/static/', 'topic_business')),
+                   'mobile': load_topic(os.path.join('app/static/', 'topic_mobile')),
+                   'frontend': load_topic(os.path.join('app/static/', 'topic_frontend')),
+                   'security': load_topic(os.path.join('app/static/', 'topic_security')),
+                   'network': load_topic(os.path.join('app/static/', 'topic_network')),
+                   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
+                   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
+                   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
+                   'data': load_topic(os.path.join('app/static/', 'topic_data.txt'))
+                   }
+    resume_freq = load_resume(file_url.replace("pdf", "txt"))
+    keyword = json.dumps(infer_topic(topic_freqs, resume_freq))
+    # print keywords(resume,lemmatize=True)
+    return keyword;
+
 
 # recommend jobs based on a file
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
+    # global tf, tfidf, df
+    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+        df = pickle.load(handle)
 
-	# global tf, tfidf, df
-	with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-		df = pickle.load(handle)
+    file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
-	file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    with open(file_url.replace("pdf", "txt"), 'r') as f:
+        resume = f.read()
+        recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi',
+                                                         experience='1 - 3 yrs')
 
-	with open(file_url.replace("pdf","txt"), 'r') as f:
-		resume = f.read()
-		recommendation_index = find_jobs_with_conditions(None, None, resume, None, location='Delhi', experience='1 - 3 yrs')
+    recommendation_job = []
+    for index in recommendation_index:
+        recommendation_job.append({
+            'Company': df['company'][index],
+            'Position': df['jobtitle'][index],
+            'Url': '#',
+            'Location': df['joblocation_address'][index],
+            'Description': df['jobdescription'][index],
+            'Experience': df['experience'][index]
+        })
 
-	recommendation_job = []
-	for index in recommendation_index:
-		recommendation_job.append({
-			'Company' : df['company'][index],
-			'Position' : df['jobtitle'][index],
-			'Url' : '#',
-			'Location' : df['joblocation_address'][index],
-			'Description' : df['jobdescription'][index],
-			'Experience' : df['experience'][index]
-		})
+    return json.dumps(recommendation_job)
 
-	return json.dumps(recommendation_job)
 
 # update recommend jobs based on a file
 @app.route('/update_recommendation/<filter_data>/', methods=['GET'])
 def update_recommend_jobs(filter_data):
-	data = json.loads(filter_data)
-	number = data["number"]
-	location = data["location"]
-	experience = data["experience"]
-	resume_url = os.path.join(app.config['UPLOAD_FOLDER'], data["resume"])
-	with open(resume_url.replace("pdf","txt"), 'r') as f:
-		resume = f.read()
+    data = json.loads(filter_data)
+    number = data["number"]
+    location = data["location"]
+    experience = data["experience"]
+    resume_url = os.path.join(app.config['UPLOAD_FOLDER'], data["resume"])
+    with open(resume_url.replace("pdf", "txt"), 'r') as f:
+        resume = f.read()
 
-	# recommend jobs
+    # recommend jobs
 
-	return json.dumps(filter_data, separators=(',',':'))
+    return json.dumps(filter_data, separators=(',', ':'))
+
 
 # private util functions #
 def allowed_file(filename):
-	return '.' in filename and \
-		filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def pdf_parser(pdf):
-	fp = file(pdf, 'r')
-	rsrcmgr = PDFResourceManager()
-	retstr = StringIO()
-	laparams = LAParams()
-	device = TextConverter(rsrcmgr, retstr, codec='utf-8', laparams=laparams)
-	interpreter = PDFPageInterpreter(rsrcmgr, device)
+    fp = file(pdf, 'r')
+    rsrcmgr = PDFResourceManager()
+    retstr = StringIO()
+    laparams = LAParams()
+    device = TextConverter(rsrcmgr, retstr, codec='utf-8', laparams=laparams)
+    interpreter = PDFPageInterpreter(rsrcmgr, device)
 
-	for page in PDFPage.get_pages(fp):
-		interpreter.process_page(page)
-		data = retstr.getvalue()
+    for page in PDFPage.get_pages(fp):
+        interpreter.process_page(page)
+        data = retstr.getvalue()
 
-		return data
+        return data
 
 
-def train(train_path = os.path.join('app/static/', 'naukri_com-job_sample.csv')):
-
-	stopWords = stopwords.words("english")
-	df = pd.read_csv(train_path).fillna('N/A')
-
-	df.dropna(subset=['jobdescription'])
-	jd = df['jobdescription'].astype('U').tolist()
-
-	tf = TfidfVectorizer(analyzer='word', stop_words=stopWords)
-	tfidf_matrix = tf.fit_transform(jd)
-	return tf, tfidf_matrix
+def train(train_path=os.path.join('app/static/', 'naukri_com-job_sample.csv')):
+    stopWords = stopwords.words("english")
+    df = pd.read_csv(train_path).fillna('N/A')
+    df.dropna(subset=['jobdescription'])
+    jd = df['jobdescription'].astype('U').tolist()
+    tf = TfidfVectorizer(analyzer='word', stop_words=stopWords)
+    tfidf_matrix = tf.fit_transform(jd)
+    return tf, tfidf_matrix
 
 
 def find_jobs(tf, tfidf_matrix, query_content):
-	cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf_matrix).flatten()
-	related_docs_indices = cosine_similarities.argsort()[:-11:-1]
-	return related_docs_indices
+    cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf_matrix).flatten()
+    related_docs_indices = cosine_similarities.argsort()[:-11:-1]
+    return related_docs_indices
 
 
-def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df,experience=None, location=None, n=5):
-	with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
-		tf = pickle.load(handle)
-	with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
-		tfidf = pickle.load(handle)
-	with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-		df = pickle.load(handle)
-	cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
-	related_docs_indices = cosine_similarities.argsort()
-	selected_df = df.ix[related_docs_indices]
-	selected_df =  selected_df.loc[(selected_df['experience'] == experience) & (selected_df['joblocation_address'].str.match(location))]
-	max_len = min(n, len(selected_df))
-	return selected_df.index.values.astype(int)[0:max_len]
+def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, experience=None, location=None, n=5):
+    with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
+        tf = pickle.load(handle)
+    with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
+        tfidf = pickle.load(handle)
+    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+        df = pickle.load(handle)
+    cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
+    related_docs_indices = cosine_similarities.argsort()
+    selected_df = df.ix[related_docs_indices]
+    selected_df = selected_df.loc[
+        (selected_df['experience'] == experience) & (selected_df['joblocation_address'].str.match(location))]
+    max_len = min(n, len(selected_df))
+    return selected_df.index.values.astype(int)[0:max_len]
 
 
 def purify_sentence(sentence):
@@ -220,6 +224,7 @@ def infer_topic(topics, resume):
     topic_words = {}
     score = 0
     for topic_word in topics:
+        print topic_word
         for key in resume:
             if key in topics[topic_word]:
                 score += topics[topic_word][key] * resume[key]
@@ -231,9 +236,26 @@ def infer_topic(topics, resume):
         score = 0
     topic_sum = sum(topic_scores.values())
     topic_ratio = {}
+    print "really intersting"
     for val in topic_scores:
-        topic_ratio[val]=float(topic_scores[val])/topic_sum
+        topic_ratio[val] = float(topic_scores[val]) / topic_sum
     res = {}
     for key in topics:
-        res[key]={'percentage':topic_ratio[key], 'words':topic_words[key]}
+        if key not in topic_words:
+            continue
+        res[key] = {'percentage': topic_ratio[key], 'words': topic_words[key]}
     return res
+
+
+def calc_similarity(content):
+    with open(os.path.join('./', 'keyword_lists.pickle'), 'rb') as handle:
+        keywords_list = pickle.load(handle)
+    with open(os.path.join('./', 'df.pickle'), 'rb') as handle:
+        df = pickle.load(handle)
+        df.dropna(subset=['jobdescription'])
+        jd = df['jobdescription'].astype('U').tolist()
+    resume_keywords = extract_keywords(content)
+    same_list=[]
+    for lst in keywords_list:
+        same_list.append(len(list(set(resume_keywords) & set(lst))))
+    return same_list
