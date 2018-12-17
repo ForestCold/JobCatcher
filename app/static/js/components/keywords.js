@@ -23,7 +23,6 @@ var keywords = Vue.component('keywords', {
             success: function(resp) {
                 if (!resp || resp.status !== "success") {
                     resp = $.parseJSON(resp)
-                    console.log(resp)
                     _this.renderChart(resp.topics);
                     return;
                 }

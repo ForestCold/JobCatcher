@@ -300,6 +300,6 @@ var colorbrewer = {YlGn: {
 11: ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5"],
 12: ["#8dd3c7","#ffffb3","#bebada","#fb8072","#80b1d3","#fdb462","#b3de69","#fccde5","#d9d9d9","#bc80bd","#ccebc5","#ffed6f"]
 },self: {
-1: ["#ffe799", "#9dddd6", "#f7c0d1", "#a9dcfd", "#ded1f0", "#777", "#a7d9e6"]
+1: ["#ffe799", "#9dddd6", "#ffdbb4", "#f7c0d1", "#a9dcfd", "#ded1f0", "#bbb", "#aac7ff", "#84a3c7", "#cff0c9"]
 }
 };
