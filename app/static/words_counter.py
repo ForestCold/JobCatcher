@@ -42,7 +42,7 @@ def get_title_freq(matching_title = 'software', is_output_to_file = False):
 
     #store result
     if is_output_to_file:
-        output_file = str(matching_title) + '.txt'
+        output_file = matching_title+'_output.txt'
         with open(output_file, 'w+') as f:
             for count in total_title_count.most_common():
                 f.write(str(count[0]) + ':' + str(count[1]) + '\n')
@@ -54,7 +54,7 @@ def get_words_freq(string, freq_counter = collections.Counter()):
     try:
         # wordlist = string.split()
         wordlist = re.findall(r"\w+", string.lower())
-        st = LancasterStemmer()
+        # st = LancasterStemmer()
         # wordlist = [st.stem(word) for word in wordlist]
         freq_counter += collections.Counter(wordlist)
     except:
@@ -79,5 +79,3 @@ if __name__ == '__main__':
     # get_words_freq()#
     # print count1
     get_title_freq(matching_title= 'network', is_output_to_file= True)
-
-
