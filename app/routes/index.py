@@ -35,11 +35,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
+with open(os.path.join('app/static/data/', 'tf.pickle'), 'rb') as handle:
     tf = pickle.load(handle)
-with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
+with open(os.path.join('app/static/data/', 'tfidf.pickle'), 'rb') as handle:
     tfidf = pickle.load(handle)
-with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
     df = pickle.load(handle).fillna('N/A')
     df.dropna(subset=['jobdescription'])
     jd = df['jobdescription'].astype('U').tolist()
@@ -79,16 +79,16 @@ def upload_file():
 @app.route('/analysis/<filename>/', methods=['GET'])
 def analysis_file(filename):
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
-                   'business': load_topic(os.path.join('app/static/', 'topic_business')),
-                   'mobile': load_topic(os.path.join('app/static/', 'topic_mobile')),
-                   'frontend': load_topic(os.path.join('app/static/', 'topic_frontend')),
-                   'security': load_topic(os.path.join('app/static/', 'topic_security')),
-                   'network': load_topic(os.path.join('app/static/', 'topic_network')),
-                   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
-                   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
-                   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
-                   'data': load_topic(os.path.join('app/static/', 'topic_data.txt'))
+    topic_freqs = {'software': load_topic(os.path.join('app/static/data/', 'topic_software')),
+                   'business': load_topic(os.path.join('app/static/data/', 'topic_business')),
+                   'mobile': load_topic(os.path.join('app/static/data/', 'topic_mobile')),
+                   'frontend': load_topic(os.path.join('app/static/data/', 'topic_frontend')),
+                   'security': load_topic(os.path.join('app/static/data/', 'topic_security')),
+                   'network': load_topic(os.path.join('app/static/data/', 'topic_network')),
+                   'operations': load_topic(os.path.join('app/static/data/', 'topic_operations.txt')),
+                   'hardware': load_topic(os.path.join('app/static/data/', 'topic_hardware.txt')),
+                   'backend': load_topic(os.path.join('app/static/data/', 'topic_backend.txt')),
+                   'data': load_topic(os.path.join('app/static/data/', 'topic_data.txt'))
                    }
     resume_freq = load_resume(file_url.replace("pdf", "txt"))
 
@@ -107,7 +107,7 @@ def analysis_file(filename):
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
     # global tf, tfidf, df
-    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+    with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
         df = pickle.load(handle).fillna('N/A')
 
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
@@ -189,11 +189,10 @@ def pdf_parser(pdf):
     for page in PDFPage.get_pages(fp):
         interpreter.process_page(page)
         data = retstr.getvalue()
-
         return data
 
 
-def train(train_path=os.path.join('app/static/', 'naukri_com-job_sample.csv')):
+def train(train_path=os.path.join('app/static/data/', 'naukri_com-job_sample.csv')):
     stopWords = stopwords.words("english")
     df = pd.read_csv(train_path).fillna('N/A')
     df.dropna(subset=['jobdescription'])
@@ -308,9 +307,9 @@ def infer_topic(topics, resume):
 
 
 def calc_similarity(content):
-    with open(os.path.join('app/static/', 'keyword_lists.pickle'), 'rb') as handle:
+    with open(os.path.join('app/static/data/', 'keyword_lists.pickle'), 'rb') as handle:
         keywords_list = pickle.load(handle)
-    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+    with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
         df = pickle.load(handle).fillna('N/A')
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
