@@ -5,3 +5,4 @@ pandas
 nltk
 sklearn
 pdfminer
+yaml
