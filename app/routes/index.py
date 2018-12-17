@@ -83,7 +83,13 @@ def analysis_file(filename):
                    'data': load_topic(os.path.join('app/static/', 'topic_data.txt'))
                    }
     resume_freq = load_resume(file_url.replace("pdf", "txt"))
-    keyword = json.dumps(infer_topic(topic_freqs, resume_freq))
+
+    cv_info = infer_topic(topic_freqs, resume_freq)
+    with open(file_url.replace("pdf", "txt"), 'r') as f:
+        resume = f.read()
+    cv_info["keywords"] = extract_keywords(resume)
+
+    keyword = json.dumps(cv_info)
     # print keywords(resume,lemmatize=True)
     return keyword;
 
