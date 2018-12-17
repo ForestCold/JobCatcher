@@ -71,7 +71,12 @@ def analysis_file(filename):
 				   'data':load_topic(os.path.join('app/static/', 'topic_data')),
 				   'business':load_topic(os.path.join('app/static/', 'topic_business')),
 				   'mobile':load_topic(os.path.join('app/static/', 'topic_mobile')),
-				   'web':load_topic(os.path.join('app/static/', 'topic_web'))
+				   'web':load_topic(os.path.join('app/static/', 'topic_web')),
+				   'network': load_topic(os.path.join('app/static/', 'topic_network.txt')),
+				   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
+				   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
+				   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
+				   'data2': load_topic(os.path.join('app/static/', 'topic_data.txt '))
 				   }
 	resume_freq = load_resume(file_url.replace("pdf","txt"))
 	keyword = json.dumps(infer_topic(topic_freqs, resume_freq))
