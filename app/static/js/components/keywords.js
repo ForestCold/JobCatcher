@@ -8,7 +8,8 @@ var keywords = Vue.component('keywords', {
       </div>
     `,
     data: {
-      selectedResume : ''
+      selectedResume : '',
+      myNewChart : ''
     },
     ready: function() {
       this.reload(this.selectedResume);
@@ -22,7 +23,8 @@ var keywords = Vue.component('keywords', {
             success: function(resp) {
                 if (!resp || resp.status !== "success") {
                     resp = $.parseJSON(resp)
-                    _this.renderChart(resp);
+                    console.log(resp)
+                    _this.renderChart(resp.topics);
                     return;
                 }
             },error: function() {
@@ -42,21 +44,25 @@ var keywords = Vue.component('keywords', {
           data.labels.push(position);
           data.datasets[0].backgroundColor.push(colorbrewer.self[1][index]);
         }
-        console.log(data)
 
-        var myNewChart = new Chart("chart", {
+        if (this.myNewChart) {
+          this.myNewChart.destroy();
+        }
+
+        this.myNewChart = new Chart("chart", {
             type: 'doughnut',
             data: data
         });
 
         $("#chart").click(
           function(evt){
-            var activePoints = myNewChart.getElementsAtEvent(evt);
+            var activePoints = _this.myNewChart.getElementsAtEvent(evt);
             var chartData = activePoints[0]['_chart'].config.data;
             var idx = activePoints[0]['_index'];
             var label = chartData.labels[idx];
             _this.renderWords(resp[label].words)
           });
+
         },
         renderWords : function(words) {
           var data = [];

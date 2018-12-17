@@ -126,7 +126,18 @@ var recommendationArea = Vue.component('recommendation-area', {
             contentType: false,
             success: function(resp) {
                 if (!resp || resp.status !== "success") {
-                    console.log(resp);
+                    resp = JSON.parse(resp);
+                    _this.jobList = {};
+                    for (job in resp) {
+                      resp[job]['icon'] = 'vpn_key';
+                      resp[job]['id'] = job;
+                      resp[job]['favorite'] = false;
+                      Vue.set(_this.jobList, parseInt(job), resp[job]);
+                    }
+                    store.dispatch('setAllJobs', {
+                      'job' : resp,
+                      'resume' : _this.selectedResume
+                    });
                     return;
                 }
             },error: function() {
