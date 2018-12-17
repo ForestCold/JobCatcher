@@ -11,6 +11,7 @@ MATCHING_TITLES = ['software', '(?:big data)|(?:machine learning)|(?:data scient
                    '(?:mobile)|(?:android)|(?:ios)', 'application', 'security', 'network',
                    'Operations', 'business',  'UI ', '(?:database)|(?:SQL)', 'hardware']
 
+
 def load_jd_dataset(file_path = DEFAULT_JDSET_PATH):
     jds = pandas.read_csv(file_path)
     return jds
@@ -41,7 +42,7 @@ def get_title_freq(matching_title = 'software', is_output_to_file = False):
 
     #store result
     if is_output_to_file:
-        output_file = 'output.txt'
+        output_file = str(matching_title) + '.txt'
         with open(output_file, 'w+') as f:
             for count in total_title_count.most_common():
                 f.write(str(count[0]) + ':' + str(count[1]) + '\n')
@@ -54,16 +55,21 @@ def get_words_freq(string, freq_counter = collections.Counter()):
         # wordlist = string.split()
         wordlist = re.findall(r"\w+", string.lower())
         st = LancasterStemmer()
-        wordlist = [st.stem(word) for word in wordlist]
+        # wordlist = [st.stem(word) for word in wordlist]
         freq_counter += collections.Counter(wordlist)
     except:
         pass
 
     return freq_counter
 
-# def auto_word_counter():
-#     for title in MATCHING_TITLES:
-#         output_name = str(title.split())
+def auto_word_counter():
+    for title in MATCHING_TITLES:
+        output_name = str(title) + '.txt'
+
+
+    # work split
+    # mobile frontend security business Software
+    # data backend fullstack network operations hardware
 
 
 if __name__ == '__main__':
@@ -72,4 +78,6 @@ if __name__ == '__main__':
 
     # get_words_freq()#
     # print count1
-    get_title_freq(matching_title= '(?:database)|(?:SQL)', is_output_to_file= True)
+    get_title_freq(matching_title= 'network', is_output_to_file= True)
+
+
