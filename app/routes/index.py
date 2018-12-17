@@ -93,7 +93,7 @@ def analysis_file(filename):
 def recommend_jobs(filename):
     # global tf, tfidf, df
     with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle)
+        df = pickle.load(handle).fillna('N/A')
 
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
@@ -127,9 +127,6 @@ def update_recommend_jobs(filter_data):
     resume_url = os.path.join(app.config['UPLOAD_FOLDER'], data["resume"])
     with open(resume_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
-
-    # recommend jobs
-    print experience
 
     return json.dumps(filter_data, separators=(',', ':'))
 
@@ -171,7 +168,7 @@ def find_jobs(tf, tfidf_matrix, query_content, n):
     with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
         tfidf = pickle.load(handle)
     with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle)
+        df = pickle.load(handle).fillna('N/A')
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
 
@@ -191,20 +188,21 @@ def find_jobs(tf, tfidf_matrix, query_content, n):
     print "top {} similar jobs".format(n)
     return related_docs_indices
 
-
-def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, experience=None, location=None, n=5):
+def find_jobs_with_conditions(tf, tfidf_matrix, query_content, df, year=2, location="Delhi", n=5):
     with open(os.path.join('app/static/', 'tf.pickle'), 'rb') as handle:
         tf = pickle.load(handle)
     with open(os.path.join('app/static/', 'tfidf.pickle'), 'rb') as handle:
         tfidf = pickle.load(handle)
     with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle)
+        df = pickle.load(handle).fillna('N/A')
+        df.dropna(subset=['jobdescription'])
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
     related_docs_indices = cosine_similarities.argsort()
     selected_df = df.ix[related_docs_indices]
-    # exp_req_filter()
+    # selected_df = exp_req_filter(selected_df, low_bound=2)
+    experience = str(year)+" -"
     selected_df = selected_df.loc[
-        (selected_df['experience'] == experience) & (selected_df['joblocation_address'].str.match(location))]
+        (selected_df['experience'].str.match(experience)) & (selected_df['joblocation_address'].str.match(location))]
     max_len = min(n, len(selected_df))
     return selected_df.index.values.astype(int)[0:max_len]
 
@@ -277,7 +275,7 @@ def calc_similarity(content):
     with open(os.path.join('app/static/', 'keyword_lists.pickle'), 'rb') as handle:
         keywords_list = pickle.load(handle)
     with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle)
+        df = pickle.load(handle).fillna('N/A')
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
     resume_keywords = extract_keywords(content)

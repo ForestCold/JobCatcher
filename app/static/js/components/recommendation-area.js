@@ -119,8 +119,6 @@ var recommendationArea = Vue.component('recommendation-area', {
           'resume' : _this.selectedResume
         }
 
-        console.log(searchData)
-
         $.ajax({
             method: 'GET',
             url: 'update_recommendation/' + JSON.stringify(searchData),
