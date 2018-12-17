@@ -75,9 +75,40 @@ def upload_file():
     return json.dumps("uploaded_files/" + filename)
 
 
+# generate keywords based on a file
+@app.route('/analysis/<filename>/', methods=['GET'])
+def analysis_file(filename):
+    file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
+                   'business': load_topic(os.path.join('app/static/', 'topic_business')),
+                   'mobile': load_topic(os.path.join('app/static/', 'topic_mobile')),
+                   'frontend': load_topic(os.path.join('app/static/', 'topic_frontend')),
+                   'security': load_topic(os.path.join('app/static/', 'topic_security')),
+                   'network': load_topic(os.path.join('app/static/', 'topic_network')),
+                   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
+                   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
+                   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
+                   'data': load_topic(os.path.join('app/static/', 'topic_data.txt'))
+                   }
+    resume_freq = load_resume(file_url.replace("pdf", "txt"))
+
+    cv_info = infer_topic(topic_freqs, resume_freq)
+    with open(file_url.replace("pdf", "txt"), 'r') as f:
+        resume = f.read()
+    cv_info["keywords"] = extract_keywords(resume)
+
+    keyword = json.dumps(cv_info)
+    # print keywords(resume,lemmatize=True)
+    return keyword;
+
+
 # recommend jobs based on a file
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
+    # global tf, tfidf, df
+    with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
+        df = pickle.load(handle).fillna('N/A')
+
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
     with open(file_url.replace("pdf", "txt"), 'r') as f:
@@ -159,32 +190,6 @@ def pdf_parser(pdf):
         data = retstr.getvalue()
 
         return data
-
-
-# generate keywords based on a file
-@app.route('/analysis/<filename>/', methods=['GET'])
-def analysis_file(filename):
-    file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    topic_freqs = {'software': load_topic(os.path.join('app/static/', 'topic_software')),
-                   'business': load_topic(os.path.join('app/static/', 'topic_business')),
-                   'mobile': load_topic(os.path.join('app/static/', 'topic_mobile')),
-                   'frontend': load_topic(os.path.join('app/static/', 'topic_frontend')),
-                   'security': load_topic(os.path.join('app/static/', 'topic_security')),
-                   'network': load_topic(os.path.join('app/static/', 'topic_network')),
-                   'operations': load_topic(os.path.join('app/static/', 'topic_operations.txt')),
-                   'hardware': load_topic(os.path.join('app/static/', 'topic_hardware.txt')),
-                   'backend': load_topic(os.path.join('app/static/', 'topic_backend.txt')),
-                   'data': load_topic(os.path.join('app/static/', 'topic_data.txt'))
-                   }
-    resume_freq = load_resume(file_url.replace("pdf", "txt"))
-
-    cv_info = infer_topic(topic_freqs, resume_freq)
-    with open(file_url.replace("pdf", "txt"), 'r') as f:
-        resume = f.read()
-
-    cv_info["keywords"] = extract_keywords(resume)
-    keyword = json.dumps(cv_info)
-    return keyword;
 
 
 def train(train_path=os.path.join('app/static/', 'naukri_com-job_sample.csv')):
@@ -305,7 +310,7 @@ def calc_similarity(content):
     with open(os.path.join('app/static/', 'keyword_lists.pickle'), 'rb') as handle:
         keywords_list = pickle.load(handle)
     with open(os.path.join('app/static/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle)
+        df = pickle.load(handle).fillna('N/A')
         df.dropna(subset=['jobdescription'])
         jd = df['jobdescription'].astype('U').tolist()
     resume_keywords = extract_keywords(content)

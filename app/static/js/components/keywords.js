@@ -3,7 +3,7 @@ Vue.config.devtools = true;
 var keywords = Vue.component('keywords', {
     template: `
       <div class="col s6">
-        <div class="col s12" style="padding-top:50px; height:300px"><canvas id="chart"></canvas></div>
+        <div class="col s12" style="padding-top:50px; padding-bottom:50px;"><canvas id="chart"></canvas></div>
         <div class="chips chips-initial col s12"></div>
       </div>
     `,
@@ -64,7 +64,6 @@ var keywords = Vue.component('keywords', {
             word = {'tag' : words[r]}
             data.push(word)
           }
-          console.log(data)
           $('.chips-initial').material_chip({
             data: data
           });
