@@ -9,10 +9,19 @@ __Try it out! [https://job-catcher.herokuapp.com/](https://job-catcher.herokuapp
   ### Environment Requirement
   - Python 2.7
   - pip
-
+  - Flask
+  - numpy
+  - pandas
+  - nltk (punkt, stopwords)
+  - sklearn
+  - pdfminer
+  - pyyaml
+  - psutil
+  
   ### Deployment
   - Heroku
-
+  - gunicorn
+  
   ### Install Heroku Dev CLI
 
   ```bash
