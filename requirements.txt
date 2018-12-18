@@ -6,3 +6,4 @@ nltk
 sklearn
 pdfminer
 pyyaml
+psutil
