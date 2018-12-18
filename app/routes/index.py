@@ -44,6 +44,8 @@ with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
     df = pickle.load(handle).fillna('N/A')
     df.dropna(subset=['jobdescription'])
     # jd = df['jobdescription'].astype('U').tolist()
+with open(os.path.join('app/static/data/', 'keyword_lists.pickle'), 'rb') as handle:
+    keywords_list = pickle.load(handle)
 
 pid = os.getpid()
 
@@ -114,12 +116,8 @@ def analysis_file(filename):
 # recommend jobs based on a file
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
-    # global tf, tfidf, df
     print "COME INTO RECOMMEND_JOBS"
     show_memory()
-
-    # with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
-    #     df = pickle.load(handle).fillna('N/A')
 
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
@@ -336,12 +334,6 @@ def infer_topic(topics, resume):
 
 
 def calc_similarity(content):
-    with open(os.path.join('app/static/data/', 'keyword_lists.pickle'), 'rb') as handle:
-        keywords_list = pickle.load(handle)
-    with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle).fillna('N/A')
-        df.dropna(subset=['jobdescription'])
-        jd = df['jobdescription'].astype('U').tolist()
     resume_keywords = extract_keywords(content)
     same_list = []
     for lst in keywords_list:
