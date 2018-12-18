@@ -4,6 +4,7 @@ import sys
 import pandas as pd
 import string
 import pickle
+import psutil
 
 from nltk.corpus import stopwords
 from nltk.stem.lancaster import LancasterStemmer
@@ -42,7 +43,14 @@ with open(os.path.join('app/static/data/', 'tfidf.pickle'), 'rb') as handle:
 with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
     df = pickle.load(handle).fillna('N/A')
     df.dropna(subset=['jobdescription'])
-    jd = df['jobdescription'].astype('U').tolist()
+    # jd = df['jobdescription'].astype('U').tolist()
+
+pid = os.getpid()
+
+p = psutil.Process(pid)
+print 'Process info:'
+print 'name: ', p.name()
+print 'exe:  ', p.exe()
 
 
 @app.route('/')
@@ -107,15 +115,24 @@ def analysis_file(filename):
 @app.route('/recommend/<filename>/', methods=['GET'])
 def recommend_jobs(filename):
     # global tf, tfidf, df
-    with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
-        df = pickle.load(handle).fillna('N/A')
+    print "COME INTO RECOMMEND_JOBS"
+    show_memory()
+
+    # with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
+    #     df = pickle.load(handle).fillna('N/A')
 
     file_url = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    print "BEFORE GET RECOMMENDATION"
+    show_memory()
 
     with open(file_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
         recommendation_index = find_jobs_with_conditions(resume, location=None, year=20)
         # recommendation_index = find_jobs(None, None, resume, 10)
+
+    print "AFTER GET RECOMMENDATION"
+    show_memory()
 
     recommendation_job = []
     for index in recommendation_index:
@@ -155,8 +172,11 @@ def update_recommend_jobs(filter_data):
     elif experience == "More Than Five Years":
         year = 6
 
+    print "BEFORE UPDATE RECOMMENDATION"
+    show_memory()
     recommendation_index = find_jobs_with_conditions(resume, year=year, location=location, n=number)
-
+    print "AFTER UPDATE RECOMMENDATION"
+    show_memory()
     # return json.dumps(filter_data, separators=(',', ':'))
     recommendation_job = []
     for index in recommendation_index:
@@ -221,7 +241,12 @@ def find_jobs(tf, tfidf_matrix, query_content, n):
 
 
 def find_jobs_with_conditions(query_content, year=10, location="Delhi", n=10):
+    show_memory()
+
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
+
+    show_memory()
+
     key_factors = calc_similarity(query_content)
     k_max = max(key_factors)
     k_min = min(key_factors)
@@ -234,6 +259,8 @@ def find_jobs_with_conditions(query_content, year=10, location="Delhi", n=10):
     simlarities = cosine_similarities + tmp_list
     related_docs_indices = simlarities.argsort()[::-1]
 
+    show_memory()
+
     selected_df = df.ix[related_docs_indices]
     selected_df = filter_exp_req(selected_df, low_bound=year)
 
@@ -241,6 +268,8 @@ def find_jobs_with_conditions(query_content, year=10, location="Delhi", n=10):
         selected_df = selected_df.loc[
             (selected_df['joblocation_address'].str.match(location))]
     max_len = min(n, len(selected_df))
+
+
     return selected_df.index.values.astype(int)[0:max_len]
 
 
@@ -339,3 +368,8 @@ def apply_filter(string, low_bound):
 def filter_exp_req(jds, low_bound):
     filtered_jds = jds[jds['experience'].apply(lambda x: apply_filter(x, low_bound))]
     return filtered_jds
+
+def show_memory():
+    info = p.memory_full_info()
+    memory = info.uss / 1024. / 1024.
+    print 'Memory used: {:.2f} MB'.format(memory)
