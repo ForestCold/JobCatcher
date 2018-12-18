@@ -36,13 +36,17 @@ reload(sys)
 sys.setdefaultencoding('utf8')
 
 with open(os.path.join('app/static/data/', 'tf.pickle'), 'rb') as handle:
+# with open(os.path.join('../static/data/', 'tf.pickle'), 'rb') as handle:
     tf = pickle.load(handle)
 with open(os.path.join('app/static/data/', 'tfidf.pickle'), 'rb') as handle:
+# with open(os.path.join('../static/data/', 'tfidf.pickle'), 'rb') as handle:
     tfidf = pickle.load(handle)
 with open(os.path.join('app/static/data/', 'df.pickle'), 'rb') as handle:
+# with open(os.path.join('../static/data/', 'df.pickle'), 'rb') as handle:
     df = pickle.load(handle).fillna('N/A')
     df.dropna(subset=['jobdescription'])
     jd = df['jobdescription'].astype('U').tolist()
+    print "## JD ready"
 
 
 @app.route('/')
@@ -115,7 +119,7 @@ def recommend_jobs(filename):
     with open(file_url.replace("pdf", "txt"), 'r') as f:
         resume = f.read()
         recommendation_index = find_jobs_with_conditions(resume, location=None, year=20)
-        # recommendation_index = find_jobs(None, None, resume, 10)
+        # recommendation_index = find_jobs(resume, 10)
 
     recommendation_job = []
     for index in recommendation_index:
@@ -154,9 +158,10 @@ def update_recommend_jobs(filter_data):
         year = 5
     elif experience == "More Than Five Years":
         year = 6
-
     recommendation_index = find_jobs_with_conditions(resume, year=year, location=location, n=number)
 
+    # print "TOP {} JOBS".format(number)
+    # print recommendation_index
     # return json.dumps(filter_data, separators=(',', ':'))
     recommendation_job = []
     for index in recommendation_index:
@@ -202,20 +207,23 @@ def train(train_path=os.path.join('app/static/data/', 'naukri_com-job_sample.csv
     return tf, tfidf_matrix
 
 
-def find_jobs(tf, tfidf_matrix, query_content, n):
+def find_jobs(query_content, n):
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
-    key_factors = calc_similarity(query_content)
-    k_max = max(key_factors)
-    k_min = min(key_factors)
-    k_range = k_max - k_min
-    c_max = max(cosine_similarities)
-    c_min = min(cosine_similarities)
-    c_range = c_max - c_min
-    factor = k_range / c_range * 0.8
-    tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
-    simlarities = cosine_similarities + tmp_list
+    # key_factors = calc_similarity(query_content)
+    # k_max = max(key_factors)
+    # k_min = min(key_factors)
+    # k_range = k_max - k_min
+    # c_max = max(cosine_similarities)
+    # c_min = min(cosine_similarities)
+    # c_range = c_max - c_min
+    # factor = k_range / c_range * 0.8
+    # tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
+    # simlarities = cosine_similarities + tmp_list
+    # top_n = -1 - n
+    # related_docs_indices = simlarities.argsort()[:top_n:-1]
+
     top_n = -1 - n
-    related_docs_indices = simlarities.argsort()[:top_n:-1]
+    related_docs_indices = cosine_similarities.argsort()[:top_n:-1]
     print "top {} similar jobs".format(n)
     return related_docs_indices
 
@@ -223,16 +231,18 @@ def find_jobs(tf, tfidf_matrix, query_content, n):
 def find_jobs_with_conditions(query_content, year=10, location="Delhi", n=10):
     cosine_similarities = linear_kernel(tf.transform([query_content]), tfidf).flatten()
     key_factors = calc_similarity(query_content)
-    k_max = max(key_factors)
-    k_min = min(key_factors)
-    k_range = k_max - k_min
-    c_max = max(cosine_similarities)
-    c_min = min(cosine_similarities)
-    c_range = c_max - c_min
-    factor = k_range / c_range * 0.8
-    tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
-    simlarities = cosine_similarities + tmp_list
-    related_docs_indices = simlarities.argsort()[::-1]
+    # k_max = max(key_factors)
+    # k_min = min(key_factors)
+    # k_range = k_max - k_min
+    # c_max = max(cosine_similarities)
+    # c_min = min(cosine_similarities)
+    # c_range = c_max - c_min
+    # factor = k_range / c_range * 0.8
+    # tmp_list = [k_min + (float(x) - k_min) * factor for x in key_factors]
+    # simlarities = cosine_similarities + tmp_list
+    # related_docs_indices = simlarities.argsort()[::-1]
+
+    related_docs_indices = cosine_similarities.argsort()[::-1]
 
     selected_df = df.ix[related_docs_indices]
     selected_df = filter_exp_req(selected_df, low_bound=year)
